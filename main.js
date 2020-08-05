@@ -45,3 +45,25 @@ function userConfirm(id, password) {
     }
   }
 }
+
+/**
+ * submitUserData()をテストする
+ */
+function submitUserDataTest() {
+  submitUserData("a","b","c","d","e","f");
+}
+
+/**
+ * ユーザ情報をDBに登録する
+ */
+function submitUserData(id, password, name, address, phoneNumber, school) {
+  const sheet = getSheet('ユーザ情報');
+  var row = sheet.getLastRow();
+  console.log(row);
+  sheet.getRange(row+1,1).setValue(id);
+  sheet.getRange(row+1,2).setValue(password);
+  sheet.getRange(row+1,3).setValue(name);
+  sheet.getRange(row+1,4).setValue(address);
+  sheet.getRange(row+1,5).setValue(phoneNumber);
+  sheet.getRange(row+1,6).setValue(school);
+}

@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <h1>ログイン</h1>
+    <h1>ユーザ登録</h1>
     <table border="0">
         <tr>
             <td align="right">ID:</td>
@@ -19,25 +19,25 @@
         </tr>
         <tr>
             <td align="right">氏名:</td>
-            <td><input type="text" id="password" maxlength="20"></td>
+            <td><input type="text" id="name" maxlength="70"></td>
         </tr>
         <tr>
             <td align="right">住所:</td>
-            <td><input type="text" id="password" maxlength="20"></td>
+            <td><input type="text" id="address" maxlength="20"></td>
         </tr>
         <tr>
             <td align="right">電話:</td>
-            <td><input type="text" id="password" maxlength="20"></td>
+            <td><input type="text" id="phonenumber" maxlength="20"></td>
         </tr>
         <tr>
             <td align="right">学校:</td>
-            <td><input type="text" id="password" maxlength="20"></td>
+            <td><input type="text" id="school" maxlength="20"></td>
         </tr>
     </table>
-    <button type="submit" name="page" onclick="userConfirm()" value="mypage">
+    <button type="submit" name="page" onclick="create()" value="mypage">
         <font size="3">登録</font>
     </button></br>
-    <button type="button" name="create" value="create">
+    <button type="button" name="create" onclick="jump('login')" value="create">
         <font size="2">戻る</font>
     </button></br>
 </body>
@@ -48,23 +48,21 @@
         window.top.location.href = url + "?page=" + screen;
     }
 
-    function userConfirm() {
+    //新規ユーザ登録する
+    function create() {
         var id = document.getElementById('id').value;
         var password = document.getElementById('password').value;
-        // 半角スペースと全角スペースを削除している
-        if (id.replace(/[\x20\u3000]/g, "").length === 0 || password.replace(/[\x20\u3000]/g, "").length === 0) {
-            alert("未入力の項目があります。");
-            return;
-        }
-        google.script.run.withSuccessHandler(login).userConfirm(id, password);
-    }
-    function login(login_check) {
-        if (login_check) {
-            var url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
-            window.top.location.href = url + "?page=mypage";
-        } else {
-            alert("入力情報に誤りがあります");
-        }
+        var name = document.getElementById('name').value;
+        var address = document.getElementById('address').value;
+        var phoneNumber = document.getElementById('phonenumber').value;
+        var school = document.getElementById('school').value;
+        if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0 || name.replace(/[\x20\u3000]/g,"").length === 0 ||
+        address.replace(/[\x20\u3000]/g,"").length === 0 || phoneNumber.replace(/[\x20\u3000]/g,"").length === 0 || school.replace(/[\x20\u3000]/g,"").length === 0){
+           alert("未入力の項目があります。");
+           return;
+         }
+        google.script.run.submitUserData(id,password,name,address,phoneNumber,school);
+        jump('mypage');
     }
 </script>
 
