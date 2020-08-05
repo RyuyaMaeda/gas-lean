@@ -44,8 +44,8 @@
          }
         google.script.run.withSuccessHandler(login).userConfirm(id, password);
     }
-    function login(login_check) {
-        if (login_check) {
+    function loginCheck(check) {
+        if (check) {
             jump('mypage');
         } else {
             alert("入力情報に誤りがあります");

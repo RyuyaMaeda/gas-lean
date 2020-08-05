@@ -50,31 +50,21 @@ function userConfirm(id, password) {
  * submitUserData()をテストする
  */
 function submitUserDataTest() {
-  console.log(submitUserData("eiwa0010","b","c","d","e","f"));
+  var data = ["eiwa0011","b","c","d","e","f"];
+  console.log(submitUserData(data));
 }
 
 /**
  * ユーザ情報をDBに登録する
- * @param {*} id 
- * @param {*} password 
- * @param {*} name 
- * @param {*} address 
- * @param {*} phoneNumber 
- * @param {*} school 
- * @return IDがDBにすでにある場合falseをない場合に、trueを返す。
+ * @param {*} userDataArray id、password、名前、 住所、電話番号、学校名を含む配列
+ * @return {*} IDがDBにすでにある場合falseをない場合に、trueを返す。
  */
-function submitUserData(id, password, name, address, phoneNumber, school) {
+function submitUserData(userDataArray) {
   const sheet = getSheet('ユーザ情報');
-  var row = sheet.getLastRow();
-  if(findRow(sheet, id, 1) != 0) {
+  if(findRow(sheet, userDataArray[0], 1) != 0) {
     return false;
-  } else {
-  sheet.getRange(row+1,1).setValue(id);
-  sheet.getRange(row+1,2).setValue(password);
-  sheet.getRange(row+1,3).setValue(name);
-  sheet.getRange(row+1,4).setValue(address);
-  sheet.getRange(row+1,5).setValue(phoneNumber);
-  sheet.getRange(row+1,6).setValue(school);
+  } else { 
+  sheet.appendRow(userDataArray);
     return true;
   }
 }
