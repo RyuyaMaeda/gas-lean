@@ -50,20 +50,49 @@ function userConfirm(id, password) {
  * submitUserData()をテストする
  */
 function submitUserDataTest() {
-  submitUserData("a","b","c","d","e","f");
+  console.log(submitUserData("eiwa0010","b","c","d","e","f"));
 }
 
 /**
  * ユーザ情報をDBに登録する
+ * @param {*} id 
+ * @param {*} password 
+ * @param {*} name 
+ * @param {*} address 
+ * @param {*} phoneNumber 
+ * @param {*} school 
+ * @return IDがDBにすでにある場合falseをない場合に、trueを返す。
  */
 function submitUserData(id, password, name, address, phoneNumber, school) {
   const sheet = getSheet('ユーザ情報');
   var row = sheet.getLastRow();
-  console.log(row);
+  if(findRow(sheet, id, 1) != 0) {
+    return false;
+  } else {
   sheet.getRange(row+1,1).setValue(id);
   sheet.getRange(row+1,2).setValue(password);
   sheet.getRange(row+1,3).setValue(name);
   sheet.getRange(row+1,4).setValue(address);
   sheet.getRange(row+1,5).setValue(phoneNumber);
   sheet.getRange(row+1,6).setValue(school);
+    return true;
+  }
+}
+
+/**
+ * シートの指定した列に指定した値と同じ値があるかどうかを判定する
+ * @param {*} sheet 
+ * @param {*} value 
+ * @param {*} col 
+ * @return {*} 同じ値がある場合、その行番号を返す、ない場合、0を返す
+ */
+function findRow(sheet, value, col) {
+  var data = sheet.getDataRange().getValues();
+  data.shift();
+  for(let i = 0; i < data.length; i++ ) {
+    if(data[i][col-1] === value) {
+      return i+2;
+    }
+  }
+  return 0;
 }
