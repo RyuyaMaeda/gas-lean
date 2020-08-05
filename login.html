@@ -46,10 +46,9 @@
     }
     function login(login_check) {
         if (login_check) {
-            var url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
-            window.top.location.href = url + "?page=mypage";
+            jump('mypage');
         } else {
-            alert("入力情報に誤りがあります");
+            alert("IDまたはパスワードが間違っています");
         }
     }
 </script>
