@@ -5,7 +5,6 @@
     <?!= include('css'); ?>
      <base target="_top">
 </head>
-
 <body>
         <div id = "mypage" ><font size="5">マイページ</font></div>
         <div id = "myname"><font size="3">山田太郎さん</font></div>
@@ -50,6 +49,13 @@
                 </button></td>
         </tr>
     </table>
+    <button type="button" name="back" onclick="jump('login')" value="back"><font size="2">戻る</font></button>
 </body>
-
+<script>
+    // 画面に遷移する
+    function jump(screen) {
+        var url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
+        window.top.location.href = url + "?page=" + screen;
+    }
+ </script>   
 </html>

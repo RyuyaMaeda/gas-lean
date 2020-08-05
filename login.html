@@ -10,11 +10,11 @@
     <h1>ログイン</h1>
     <table border="0">
         <tr>
-            <td align="right">名前:</td>
+            <td align="right">ID:</td>
             <td><input type="text" id="id" maxlength="20"></td>
         </tr>
         <tr>
-            <td align="right">パスワード:</td>
+            <td align="right">PASS:</td>
             <td><input type="text" id="password" maxlength="20"></td>
         </tr>
         <tr>
@@ -26,9 +26,14 @@
                 </button></td>
         </tr>
     </table>
-
 </body>
 <script>
+    // 画面に遷移する
+    function jump(screen) {
+        var url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
+        window.top.location.href = url + "?page=" + screen;
+    }
+
     function userConfirm() {
         var id = document.getElementById('id').value;
         var password = document.getElementById('password').value;
