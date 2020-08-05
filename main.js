@@ -6,6 +6,8 @@ function doGet(e) {
   var page = e.parameter["page"];
   if (page === "mypage") {
     return HtmlService.createTemplateFromFile("mypage").evaluate();
+  } else if (page === "create") {
+    return HtmlService.createTemplateFromFile("create").evaluate();
   } else {
     return HtmlService.createTemplateFromFile("login").evaluate();
   }
