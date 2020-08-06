@@ -3,7 +3,7 @@ function include(css) {
 }
 
 function doGet(e) {
-  var page = e.parameter["page"];
+  const page = e.parameter["page"];
   if (page === "mypage") {
     return HtmlService.createTemplateFromFile("mypage").evaluate();
   } else {
@@ -32,7 +32,7 @@ function getSheet(sheetName) {
  */
 function userConfirm(id, password) {
   const sheet = getSheet('ユーザ情報');
-  var userData = sheet.getDataRange().getValues();
+  const userData = sheet.getDataRange().getValues();
   userData.shift();
   for (let i = 0; i < sheet.getLastRow() -1; i++) {
     if (id === userData[i][0] && password === userData[i][1]) {

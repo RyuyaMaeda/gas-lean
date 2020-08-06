@@ -30,13 +30,13 @@
 <script>
     // 画面に遷移する
     function jump(screen) {
-        var url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
+        const url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
         window.top.location.href = url + "?page=" + screen;
     }
 
     function userConfirm() {
-        var id = document.getElementById('id').value;
-        var password = document.getElementById('password').value;
+        const id = document.getElementById('id').value;
+        const password = document.getElementById('password').value;
         // 半角スペースと全角スペースを削除している
         if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0){
            alert("未入力の項目があります。");
