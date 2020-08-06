@@ -65,7 +65,6 @@
             .withSuccessHandler(createUrl)
             .withUserObject(screenName)
             .getAppUrl();
-        window.top.location.href = url + "?page=" + screenName;
     }
 
     //サーバ側のgetAppUrl()の失敗時に実行する
