@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <?!= include('css'); ?>
+    <?!= include("css"); ?>
     <base target="_top">
 </head>
 
@@ -75,7 +75,6 @@
 
     //サーバ側のgetAppUrl()の成功時に実行する
     function createUrl(url, screenName) {
-        alert(url);
         window.top.location.href = url + "?page=" + screenName;
     }
 </script>

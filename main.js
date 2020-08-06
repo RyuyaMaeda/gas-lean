@@ -18,7 +18,7 @@ function doGet(e) {
  * @return {*} シートを返す
  */
 function getSheet(sheetName) {
-  const spreadSheet = SpreadsheetApp.openById('19of_wJ4xxB7g7Tv7QqKtTWHVS7smYjXVSx06ODhe9Vo');
+  const spreadSheet = SpreadsheetApp.openById("19of_wJ4xxB7g7Tv7QqKtTWHVS7smYjXVSx06ODhe9Vo");
   const sheet = spreadSheet.getSheetByName(sheetName);
   return sheet;
 }
@@ -38,7 +38,7 @@ function getAppUrl() {
  * @return {*} 合っていたらtrueを、間違っていたらfalseを返す
  */
 function userConfirm(id, password) {
-  const sheet = getSheet('ユーザ情報');
+  const sheet = getSheet("ユーザ情報");
   const userData = sheet.getDataRange().getValues();
   userData.shift();
   for (let i = 0; i < sheet.getLastRow() -1; i++) {
