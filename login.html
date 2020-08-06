@@ -3,7 +3,7 @@
 
 <head>
     <base target="_top">
-    <?!= include('css'); ?>
+    <?!= include("css"); ?>
 </head>
 
 <body>
@@ -29,14 +29,28 @@
 </body>
 <script>
     // 画面に遷移する
-    function jump(screen) {
-        var url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
-        window.top.location.href = url + "?page=" + screen;
+    function jump(screenName) {
+        google.script.run
+        .withSuccessHandler(createUrl)
+        .withUserObject(screenName)
+        .getAppUrl();
+        window.top.location.href = url + "?page=" + screenName;
     }
 
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
+    }
+
+    //サーバ側のgetAppUrl()の成功時に実行する
+    function createUrl(url,screenName) {
+        alert(url);
+        window.top.location.href = url + "?page=" + screenName;
+    }
+    
     function userConfirm() {
-        var id = document.getElementById('id').value;
-        var password = document.getElementById('password').value;
+        const id = document.getElementById("id").value;
+        const password = document.getElementById("password").value;
         // 半角スペースと全角スペースを削除している
         if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0){
            alert("未入力の項目があります。");
@@ -44,11 +58,12 @@
          }
         google.script.run.withSuccessHandler(login).userConfirm(id, password);
     }
-    function loginCheck(check) {
-        if (check) {
-            jump('mypage');
+
+    function login(login_check) {
+        if (login_check) {
+            jump("mypage");
         } else {
-            alert("入力情報に誤りがあります");
+            alert("IDまたはパスワードが間違っています");
         }
     }
 </script>
