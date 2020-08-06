@@ -43,28 +43,42 @@
 </body>
 <script>
     // 画面に遷移する
-    function jump(screen) {
-        var url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
-        window.top.location.href = url + "?page=" + screen;
+    function jump(screenName) {
+        google.script.run
+            .withSuccessHandler(createUrl)
+            .withUserObject(screenName)
+            .getAppUrl();
+        window.top.location.href = url + "?page=" + screenName;
+    }
+
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
+    }
+
+    //サーバ側のgetAppUrl()の成功時に実行する
+    function createUrl(url, screenName) {
+        alert(url);
+        window.top.location.href = url + "?page=" + screenName;
     }
 
     //新規ユーザ登録する
     function create() {
-        var id = document.getElementById('id').value;
-        var password = document.getElementById('password').value;
-        var name = document.getElementById('name').value;
-        var address = document.getElementById('address').value;
-        var phoneNumber = document.getElementById('phonenumber').value;
-        var school = document.getElementById('school').value;
-        var userDataArray = [id,password,name,address,phoneNumber,school];
-        if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0 || name.replace(/[\x20\u3000]/g,"").length === 0 ||
-        address.replace(/[\x20\u3000]/g,"").length === 0 || phoneNumber.replace(/[\x20\u3000]/g,"").length === 0 || school.replace(/[\x20\u3000]/g,"").length === 0){
-           alert("未入力の項目があります。");
-           return;
-         }
+        const id = document.getElementById('id').value;
+        const password = document.getElementById('password').value;
+        const name = document.getElementById('name').value;
+        const address = document.getElementById('address').value;
+        const phoneNumber = document.getElementById('phonenumber').value;
+        const school = document.getElementById('school').value;
+        const userDataArray = [id, password, name, address, phoneNumber, school];
+        if (id.replace(/[\x20\u3000]/g, "").length === 0 || password.replace(/[\x20\u3000]/g, "").length === 0 || name.replace(/[\x20\u3000]/g, "").length === 0 ||
+            address.replace(/[\x20\u3000]/g, "").length === 0 || phoneNumber.replace(/[\x20\u3000]/g, "").length === 0 || school.replace(/[\x20\u3000]/g, "").length === 0) {
+            alert("未入力の項目があります。");
+            return;
+        }
         google.script.run
-        .withSuccessHandler(submitUserDataCheck)
-        .submitUserData(userDataArray);
+            .withSuccessHandler(submitUserDataCheck)
+            .submitUserData(userDataArray);
     }
 
     function createCheck(check) {
