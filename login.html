@@ -34,7 +34,6 @@
         .withSuccessHandler(createUrl)
         .withUserObject(screenName)
         .getAppUrl();
-        window.top.location.href = url + "?page=" + screenName;
     }
 
     //サーバ側のgetAppUrl()の失敗時に実行する
@@ -46,8 +45,8 @@
     function createUrl(url,screenName) {
         window.top.location.href = url + "?page=" + screenName;
     }
-    
-    function userConfirm() {
+
+   function userConfirm() {
         const id = document.getElementById("id").value;
         const password = document.getElementById("password").value;
         // 半角スペースと全角スペースを削除している

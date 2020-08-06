@@ -43,7 +43,7 @@ function userConfirm(id, password) {
   const sheet = getSheet("ユーザ情報");
   const userData = sheet.getDataRange().getValues();
   userData.shift();
-  for (let i = 0; i < sheet.getLastRow() -1; i++) {
+  for (let i = 0; i < sheet.getLastRow() - 1; i++) {
     if (id === userData[i][0] && password === userData[i][1]) {
       return true;
     } 
