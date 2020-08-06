@@ -24,6 +24,13 @@ function getSheet(sheetName) {
 }
 
 /**
+ * AppのURLを返す
+ */
+function getAppUrl() {
+  return ScriptApp.getService().getUrl();
+}
+
+/**
  * IDとpasswordがあっているかを確認する
  * 
  * @param {*} id 

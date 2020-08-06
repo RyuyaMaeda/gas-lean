@@ -29,9 +29,23 @@
 </body>
 <script>
     // 画面に遷移する
-    function jump(screen) {
-        const url = "https://script.google.com/a/esm.co.jp/macros/s/AKfycbyHFzsd_u6junO9YOknJrBldQd1dAzfdMF4DLkt0_4y2saP4oQO/exec";
-        window.top.location.href = url + "?page=" + screen;
+    function jump(screenName) {
+        google.script.run
+        .withSuccessHandler(createUrl)
+        .withUserObject(screenName)
+        .getAppUrl();
+        window.top.location.href = url + "?page=" + screenName;
+    }
+
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
+    }
+
+    //サーバ側のgetAppUrl()の成功時に実行する
+    function createUrl(url,screenName) {
+        alert(url);
+        window.top.location.href = url + "?page=" + screenName;
     }
 
     function userConfirm() {
