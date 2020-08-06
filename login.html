@@ -6,7 +6,7 @@
     <?!= include("css"); ?>
 </head>
 
-<body>
+<body onload="proc();">
     <h1>ログイン</h1>
     <table border="0">
         <tr>
@@ -21,18 +21,20 @@
             <td><button type="submit" name="page" onclick="userConfirm()" value="mypage">
                     <font size="2">ログイン</font>
                 </button></td>
-            <td><button type="button" name="create" onclick="jump(this.value)" value="create">
+            <td><button type="button" name="create" onclick="jump(this.value,null)" value="create">
                     <font size="2">新規登録</font>
                 </button></td>
         </tr>
     </table>
 </body>
 <script>
+
     // 画面に遷移する
-    function jump(screenName) {
+    function jump(screenName,userName) {
+        const nameArray = [screenName,userName];
         google.script.run
         .withSuccessHandler(createUrl)
-        .withUserObject(screenName)
+        .withUserObject(nameArray)
         .getAppUrl();
     }
 
@@ -42,8 +44,12 @@
     }
 
     //サーバ側のgetAppUrl()の成功時に実行する
-    function createUrl(url,screenName) {
-        window.top.location.href = url + "?page=" + screenName;
+    function createUrl(url,nameArray) {
+        if(nameArray[1] == null) {
+            window.top.location.href = url + "?page=" + nameArray[0];
+        } else {
+        window.top.location.href = url + "?page=" + nameArray[0] + "&username=" + nameArray[1];
+        }
     }
 
     //入力情報を確認する
@@ -55,16 +61,19 @@
            alert("未入力の項目があります。");
            return;
          }
-        google.script.run.withSuccessHandler(login).userConfirm(id, password);
+        google.script.run
+        .withSuccessHandler(login)
+        .userConfirm(id, password);
     }
 
     function login(login_check) {
-        if (login_check) {
-            jump("mypage");
-        } else {
+        if (!login_check) {
             alert("IDまたはパスワードが間違っています");
+        } else {
+            jump("mypage",login_check);
         }
     }
+
 </script>
 
 </html>

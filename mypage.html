@@ -11,7 +11,7 @@
         <font size="5">マイページ</font>
     </div>
     <div id="myname">
-        <font size="3">山田太郎さん</font>
+        <font size="3"><?= getData(mydata) ?></font>
     </div>
     <table border="1">
         <tr>
@@ -59,6 +59,7 @@
     </button>
 </body>
 <script>
+    
     // 画面に遷移する
     function jump(screenName) {
         google.script.run
@@ -76,6 +77,7 @@
     function createUrl(url, screenName) {
         window.top.location.href = url + "?page=" + screenName;
     }
+
 </script>
 
 </html>

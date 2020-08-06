@@ -34,8 +34,8 @@
             <td><input type="text" id="school" maxlength="20"></td>
         </tr>
     </table>
-    <button type="submit" name="page" onclick="create()" value="mypage">
-        <font size="3">登録</font>
+    <button type="button" name="page" onclick="create()" value="mypage">
+        <font size="2">登録</font>
     </button></br>
     <button type="button" name="create" onclick="jump('login')" value="create">
         <font size="2">戻る</font>
@@ -43,12 +43,12 @@
 </body>
 <script>
     // 画面に遷移する
-    function jump(screenName) {
+    function jump(screenName,userName) {
+        const nameArray = [screenName,userName];
         google.script.run
-            .withSuccessHandler(createUrl)
-            .withUserObject(screenName)
-            .getAppUrl();
-        window.top.location.href = url + "?page=" + screenName;
+        .withSuccessHandler(createUrl)
+        .withUserObject(nameArray)
+        .getAppUrl();
     }
 
     //サーバ側のgetAppUrl()の失敗時に実行する
@@ -57,8 +57,8 @@
     }
 
     //サーバ側のgetAppUrl()の成功時に実行する
-    function createUrl(url, screenName) {
-        window.top.location.href = url + "?page=" + screenName;
+    function createUrl(url, nameArray) {
+        window.top.location.href = url + "?page=" + nameArray[0] + "&username=" + nameArray[1];
     }
 
     //新規ユーザ登録する
@@ -80,12 +80,11 @@
             .submitUserData(userDataArray);
     }
 
-    function createCheck(check) {
-        if (check) {
-            alert("登録が完了しました");
-            jump('mypage');
+    function createCheck(create_check) {
+        if (!create_check) {
+            alert("すでにIDが存在しています");
         } else {
-            alert("IDがすでに存在しています");
+            jump("mypage",create_check);
         }
     }
 </script>
