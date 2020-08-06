@@ -3,7 +3,7 @@
 
 <head>
     <base target="_top">
-    <?!= include('css'); ?>
+    <?!= include("css"); ?>
 </head>
 
 <body>
@@ -46,11 +46,10 @@
     function createUrl(url,screenName) {
         alert(url);
         window.top.location.href = url + "?page=" + screenName;
-    }
-
+    
     function userConfirm() {
-        const id = document.getElementById('id').value;
-        const password = document.getElementById('password').value;
+        const id = document.getElementById("id").value;
+        const password = document.getElementById("password").value;
         // 半角スペースと全角スペースを削除している
         if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0){
            alert("未入力の項目があります。");
@@ -60,7 +59,7 @@
     }
     function login(login_check) {
         if (login_check) {
-            jump('mypage');
+            jump("mypage");
         } else {
             alert("IDまたはパスワードが間違っています");
         }
