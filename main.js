@@ -91,7 +91,24 @@ function findRow(sheet, value, col) {
 }
 
 /**
+ * イベント詳細情報を取得する
+ */
+function getEventInfo() {
+  const sheet = getSheet("イベント詳細");
+  return sheet.getDataRange().getValues();
+}
+
+/**
+ * 日付のフォーマットを変更する
+ * @param {*} date 
+ * @return {*} 変更後の日付を返す
+ */
+function convertDate(date) {
+  return Utilities.formatDate(date, "Asia/Tokyo", "yyyy/MM/dd");
+}
+/**
  * ユーザIDからイベントIDを取得する
+ * @param {*} sheet
  * @param {*} userId 
  * @return {*} イベントIDを返す 
  */
@@ -102,9 +119,11 @@ function getEventId(userId) {
   for (let i = 0; i < data.length; i++) {
     if (userId === data[i][0]) {
       userEventData.push(data[i][1]);
+    }　else {
+      userEventData.push(0);
     }
   }
-  return sort(userEventData);
+  return userEventData;
 }
 
 /**
@@ -127,6 +146,13 @@ function sort(arr) {
 }
 
 /**
+ * getEventInfo()のテストをする
+ */
+function getEventInfoTest() {
+  console.log(getEventInfo());
+}
+
+/**
  * getEventId()のテストをする
  */
 function getEventIdTest() {
@@ -140,3 +166,5 @@ function submitUserDataTest() {
   var data = ["eiwa0011", "b", "c", "d", "e", "f"];
   console.log(submitUserData(data));
 }
+
+

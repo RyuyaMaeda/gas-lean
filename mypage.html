@@ -3,6 +3,7 @@
 
 <head>
     <?!= include("css"); ?>
+    <? var eventInfoArray= getEventInfo(); ?>
     <base target="_top">
 </head>
 
@@ -22,15 +23,15 @@
                 <p>内容</p>
             </td>
             <td align="center">
-                <p>申し込み状況</p>
+                <p>申込状況</p>
             </td>
         </tr>
         <tr>
             <td nowap align="center">
-                <p>2019/7/9</p>
+                <p><?= convertDate(eventInfoArray[1][2]) ?></p>
             </td>
             <td nowrap align="center">
-                <p>インターンシップ</p>
+                <p><?= eventInfoArray[1][1] ?></p>
             </td>
             <td nowrap align="center"><button type="button" name="request" value="request">
                     <font size="2">申し込み</font>
@@ -59,6 +60,23 @@
     </button>
 </body>
 <script>
+    //ページ読み込み時に実行する
+    addEventListener('load', function() { client_getEventInfo() });
+
+    // イベントの詳細情報を取得する
+    function  client_getEventInfo() {
+        google.script.run
+            .withSuccessHandler(createTableRow)
+            .withFailureHandler(onFailure)
+            .getEventInfo();
+    }
+
+    // テーブルを作成する
+    function createTableRow(eventDataArray){       
+         alert("成功したよ");
+        // const table = document.createElenemt('table');
+        // for (let i = 0; )
+    }
     
     // 画面に遷移する
     function jump(screenName) {
