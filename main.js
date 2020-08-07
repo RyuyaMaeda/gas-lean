@@ -52,17 +52,9 @@ function userConfirm(id, password) {
   for (let i = 0; i < sheet.getLastRow() - 1; i++) {
     if (id === userData[i][0] && password === userData[i][1]) {
       return userData[i][2];
-    } 
+    }
   }
   return false;
-}
-
-/**
- * submitUserData()をテストする
- */
-function submitUserDataTest() {
-  var data = ["eiwa0011","b","c","d","e","f"];
-  console.log(submitUserData(data));
 }
 
 /**
@@ -72,10 +64,10 @@ function submitUserDataTest() {
  */
 function submitUserData(userDataArray) {
   const sheet = getSheet('ユーザ情報');
-  if(findRow(sheet, userDataArray[0], 1) != 0) {
+  if (findRow(sheet, userDataArray[0], 1) != 0) {
     return false;
-  } else { 
-  sheet.appendRow(userDataArray);
+  } else {
+    sheet.appendRow(userDataArray);
     return userDataArray[2];
   }
 }
@@ -90,9 +82,9 @@ function submitUserData(userDataArray) {
 function findRow(sheet, value, col) {
   const data = sheet.getDataRange().getValues();
   data.shift();
-  for(let i = 0; i < data.length; i++ ) {
-    if(data[i][col-1] === value) {
-      return i+2;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][col - 1] === value) {
+      return i + 2;
     }
   }
   return 0;
@@ -100,7 +92,51 @@ function findRow(sheet, value, col) {
 
 /**
  * ユーザIDからイベントIDを取得する
+ * @param {*} userId 
+ * @return {*} イベントIDを返す 
  */
-// function getEventId(userId) {
+function getEventId(userId) {
+  const sheet = getSheet("申込状況");
+  const data = sheet.getRange(2, 2, sheet.getLastRow() - 1, 2).getValues();
+  let userEventData = [];
+  for (let i = 0; i < data.length; i++) {
+    if (userId === data[i][0]) {
+      userEventData.push(data[i][1]);
+    }
+  }
+  return sort(userEventData);
+}
 
-// }
+/**
+ * ソート関数
+ * @param {*} arr 
+ * @return {*} ソート後の配列を返す
+ */
+function sort(arr) {
+  var cnt = arr.length - 1;//ソート範囲
+  while (cnt > 0) {
+    for(var i = 0; i < cnt; i++) {
+      var j = i + 1;//右の要素と比較
+      if(arr[i] > arr[j]) {
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      } 
+    }
+    cnt--;
+  }
+  return arr;
+}
+
+/**
+ * getEventId()のテストをする
+ */
+function getEventIdTest() {
+  console.log(getEventId("eiwa001"));
+}
+
+/**
+ * submitUserData()をテストする
+ */
+function submitUserDataTest() {
+  var data = ["eiwa0011", "b", "c", "d", "e", "f"];
+  console.log(submitUserData(data));
+}
