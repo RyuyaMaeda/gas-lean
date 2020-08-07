@@ -6,7 +6,7 @@ function doGet(e) {
   const page = e.parameter["page"];
   if (page === "mypage") {
     const template = HtmlService.createTemplateFromFile("mypage");
-    template.mydata = e.parameter["username"];
+    template.mydata = [e.parameter["username"],e.parameter["userid"]];
     return template.evaluate();
   } else if (page === "create") {
     return HtmlService.createTemplateFromFile("create").evaluate();
@@ -47,11 +47,11 @@ function getAppUrl() {
  */
 function userConfirm(id, password) {
   const sheet = getSheet("ユーザ情報");
-  const userData = sheet.getDataRange().getValues();
-  userData.shift();
+  const userDataArray = sheet.getDataRange().getValues();
+  userDataArray.shift();
   for (let i = 0; i < sheet.getLastRow() - 1; i++) {
-    if (id === userData[i][0] && password === userData[i][1]) {
-      return userData[i][2];
+    if (id === userDataArray[i][0] && password === userDataArray[i][1]) {
+      return userDataArray[i];
     }
   }
   return false;
@@ -60,7 +60,7 @@ function userConfirm(id, password) {
 /**
  * ユーザ情報をDBに登録する
  * @param {*} userDataArray id、password、名前、 住所、電話番号、学校名を含む配列
- * @return {*} IDがDBにすでにある場合falseをない場合に、氏名を返す。
+ * @return {*} IDがDBにすでにある場合falseをない場合に、ユーザデータの配列を返す。
  */
 function submitUserData(userDataArray) {
   const sheet = getSheet('ユーザ情報');
@@ -68,7 +68,7 @@ function submitUserData(userDataArray) {
     return false;
   } else {
     sheet.appendRow(userDataArray);
-    return userDataArray[2];
+    return userDataArray;
   }
 }
 
@@ -92,10 +92,16 @@ function findRow(sheet, value, col) {
 
 /**
  * イベント詳細情報を取得する
+ * @return {*} イベント詳細情報の配列を返す
  */
 function getEventInfo() {
   const sheet = getSheet("イベント詳細");
-  return sheet.getDataRange().getValues();
+  let data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    data[i][2] = convertDate(data[i][2]);
+    data[i][4] = convertDate(data[i][4]);
+  }
+  return data;
 }
 
 /**
@@ -106,6 +112,7 @@ function getEventInfo() {
 function convertDate(date) {
   return Utilities.formatDate(date, "Asia/Tokyo", "yyyy/MM/dd");
 }
+
 /**
  * ユーザIDからイベントIDを取得する
  * @param {*} sheet
@@ -143,6 +150,13 @@ function sort(arr) {
     cnt--;
   }
   return arr;
+}
+
+/**
+ * userConfirm()のテストをする
+ */
+function userConfirmTest() {
+  console.log(userConfirm("eiwa001","eiwa"));
 }
 
 /**

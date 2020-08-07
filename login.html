@@ -30,12 +30,12 @@
 <script>
 
     // 画面に遷移する
-    function jump(screenName,userName) {
-        const nameArray = [screenName,userName];
+    function jump(screenName, userId, userName) {
+        const nameArray = [screenName, userId, userName];
         google.script.run
-        .withSuccessHandler(createUrl)
-        .withUserObject(nameArray)
-        .getAppUrl();
+            .withSuccessHandler(createUrl)
+            .withUserObject(nameArray)
+            .getAppUrl();
     }
 
     //サーバ側のgetAppUrl()の失敗時に実行する
@@ -44,36 +44,46 @@
     }
 
     //サーバ側のgetAppUrl()の成功時に実行する
-    function createUrl(url,nameArray) {
-        if(nameArray[1] == null) {
+    function createUrl(url, nameArray) {
+        if (nameArray[1] == null) {
             window.top.location.href = url + "?page=" + nameArray[0];
         } else {
-        window.top.location.href = url + "?page=" + nameArray[0] + "&username=" + nameArray[1];
+            window.top.location.href = url + "?page=" + nameArray[0] + "&userid=" + nameArray[1] + "&username=" + nameArray[2];
         }
     }
 
     //入力情報を確認する
-   function userConfirm() {
+    function userConfirm() {
         const id = document.getElementById("id").value;
         const password = document.getElementById("password").value;
         // 半角スペースと全角スペースを削除している
-        if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0){
-           alert("未入力の項目があります。");
-           return;
-         }
+        if (id.replace(/[\x20\u3000]/g, "").length === 0 || password.replace(/[\x20\u3000]/g, "").length === 0) {
+            alert("未入力の項目があります。");
+            return;
+        }
         google.script.run
-        .withSuccessHandler(login)
-        .userConfirm(id, password);
+            .withSuccessHandler(login)
+            .withFailureHandler(onFailure)
+            .userConfirm(id, password);
+    }
+
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
     }
 
     function login(login_check) {
         if (!login_check) {
             alert("IDまたはパスワードが間違っています");
         } else {
-            jump("mypage",login_check);
+            jump("mypage", login_check[0], login_check[2]);
         }
     }
 
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
+    }
 </script>
 
 </html>
