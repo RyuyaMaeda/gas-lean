@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <?!= include("css"); ?>
+</head>
+
+<body>
+    <h1>ログイン</h1>
+    <table border="0">
+        <tr>
+            <td align="right">ID:</td>
+            <td><input type="text" id="id" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td align="right">PASS:</td>
+            <td><input type="text" id="password" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td><button type="submit" name="page" onclick="userConfirm()" value="mypage">
+                    <font size="2">ログイン</font>
+                </button></td>
+            <td><button type="button" name="create" value="create">
+                    <font size="2">新規登録</font>
+                </button></td>
+        </tr>
+    </table>
+</body>
+<script>
+    // 画面に遷移する
+    function jump(screenName) {
+        google.script.run
+        .withSuccessHandler(createUrl)
+        .withUserObject(screenName)
+        .getAppUrl();
+    }
+
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
+    }
+
+    //サーバ側のgetAppUrl()の成功時に実行する
+    function createUrl(url,screenName) {
+        window.top.location.href = url + "?page=" + screenName;
+    }
+    function userConfirm() {
+        const id = document.getElementById("id").value;
+        const password = document.getElementById("password").value;
+        // 半角スペースと全角スペースを削除している
+        if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0){
+           alert("未入力の項目があります。");
+           return;
+         }
+        google.script.run.withSuccessHandler(login).userConfirm(id, password);
+    }
+    function login(login_check) {
+        if (login_check) {
+            jump("mypage");
+        } else {
+            alert("IDまたはパスワードが間違っています");
+        }
+    }
+</script>
+
+</html>

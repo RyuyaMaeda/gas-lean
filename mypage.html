@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <?!= include("css"); ?>
+    <base target="_top">
+</head>
+
+<body>
+    <div id="mypage">
+        <font size="5">マイページ</font>
+    </div>
+    <div id="myname">
+        <font size="3">山田太郎さん</font>
+    </div>
+    <table border="1">
+        <tr>
+            <td align="center">
+                <p>日時</p>
+            </td>
+            <td align="center">
+                <p>内容</p>
+            </td>
+            <td align="center">
+                <p>申し込み状況</p>
+            </td>
+        </tr>
+        <tr>
+            <td nowap align="center">
+                <p>2019/7/9</p>
+            </td>
+            <td nowrap align="center">
+                <p>インターンシップ</p>
+            </td>
+            <td nowrap align="center"><button type="button" name="request" value="request">
+                    <font size="2">申し込み</font>
+                </button>
+                <button type="button" name="request" value="request">
+                    <font size="2">キャンセル</font>
+                </button></td>
+        </tr>
+        <tr>
+            <td nowrap align="center">
+                <p>2021/8/10</p>
+            </td>
+            <td nowrap align="center">
+                <p>筆記試験</p>
+            </td>
+            <td nowrap align="center"><button type="button" name="request" value="request">
+                    <font size="2">申し込み</font>
+                </button>
+                <button type="button" name="request" value="request">
+                    <font size="2">キャンセル</font>
+                </button></td>
+        </tr>
+    </table>
+    <button type="button" name="back" onclick="jump('login')" value="back">
+        <font size="2">戻る</font>
+    </button>
+</body>
+<script>
+    // 画面に遷移する
+    function jump(screenName) {
+        google.script.run
+            .withSuccessHandler(createUrl)
+            .withUserObject(screenName)
+            .getAppUrl();
+    }
+
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
+    }
+
+    //サーバ側のgetAppUrl()の成功時に実行する
+    function createUrl(url, screenName) {
+        window.top.location.href = url + "?page=" + screenName;
+    }
+</script>
+
+</html>
