@@ -15,8 +15,8 @@ function doGet(e) {
 
 /**
  * シートを取得する
- * 
- * @param {*} sheetName 
+ *
+ * @param {*} sheetName
  * @return {*} シートを返す
  */
 function getSheet(sheetName) {
@@ -34,9 +34,9 @@ function getAppUrl() {
 
 /**
  * IDとpasswordがあっているかを確認する
- * 
- * @param {*} id 
- * @param {*} password 
+ *
+ * @param {*} id
+ * @param {*} password
  * @return {*} 合っていたらtrueを、間違っていたらfalseを返す
  */
 function userConfirm(id, password) {
@@ -46,7 +46,7 @@ function userConfirm(id, password) {
   for (let i = 0; i < sheet.getLastRow() - 1; i++) {
     if (id === userData[i][0] && password === userData[i][1]) {
       return true;
-    } 
+    }
   }
   return false;
 }
@@ -55,7 +55,7 @@ function userConfirm(id, password) {
  * submitUserData()をテストする
  */
 function submitUserDataTest() {
-  var data = ["eiwa0011","b","c","d","e","f"];
+  var data = ["eiwa0011", "b", "c", "d", "e", "f"];
   console.log(submitUserData(data));
 }
 
@@ -66,27 +66,27 @@ function submitUserDataTest() {
  */
 function submitUserData(userDataArray) {
   const sheet = getSheet('ユーザ情報');
-  if(findRow(sheet, userDataArray[0], 1) != 0) {
+  if (findRow(sheet, userDataArray[0], 1) != 0) {
     return false;
-  } else { 
-  sheet.appendRow(userDataArray);
+  } else {
+    sheet.appendRow(userDataArray);
     return true;
   }
 }
 
 /**
  * シートの指定した列に指定した値と同じ値があるかどうかを判定する
- * @param {*} sheet 
- * @param {*} value 
- * @param {*} col 
+ * @param {*} sheet
+ * @param {*} value
+ * @param {*} col
  * @return {*} 同じ値がある場合、その行番号を返す、ない場合、0を返す
  */
 function findRow(sheet, value, col) {
-  var data = sheet.getDataRange().getValues();
+  let data = sheet.getDataRange().getValues();
   data.shift();
-  for(let i = 0; i < data.length; i++ ) {
-    if(data[i][col-1] === value) {
-      return i+2;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][col - 1] === value) {
+      return i + 2;
     }
   }
   return 0;
