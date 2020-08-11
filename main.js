@@ -6,7 +6,7 @@ function doGet(e) {
   const page = e.parameter["page"];
   if (page === "mypage") {
     const template = HtmlService.createTemplateFromFile("mypage");
-    template.mydata = [e.parameter["username"],e.parameter["userid"]];
+    template.mydata = [e.parameter["username"], e.parameter["userid"]];
     return template.evaluate();
   } else if (page === "create") {
     return HtmlService.createTemplateFromFile("create").evaluate();
@@ -21,8 +21,8 @@ function getData(mydata) {
 
 /**
  * シートを取得する
- * 
- * @param {*} sheetName 
+ *
+ * @param {*} sheetName
  * @return {*} シートを返す
  */
 function getSheet(sheetName) {
@@ -40,9 +40,9 @@ function getAppUrl() {
 
 /**
  * IDとpasswordがあっているかを確認する
- * 
- * @param {*} id 
- * @param {*} password 
+ *
+ * @param {*} id
+ * @param {*} password
  * @return {*} 合っていたら氏名を、間違っていたらfalseを返す
  */
 function userConfirm(id, password) {
@@ -53,19 +53,19 @@ function userConfirm(id, password) {
     if (id === userDataArray[i][0] && password === userDataArray[i][1]) {
       return userDataArray[i];
     }
+    return false;
   }
-  return false;
 }
 
 /**
  * ユーザ情報をDBに登録する
  * @param {*} userDataArray id、password、名前、 住所、電話番号、学校名を含む配列
- * @return {*} IDがDBにすでにある場合falseをない場合に、ユーザデータの配列を返す。
+ * @return {*} IDがDBに登録されていない場合、userDataArrayを返す。IDがDBにすでにある場合errorを返す。
  */
 function submitUserData(userDataArray) {
-  const sheet = getSheet('ユーザ情報');
+  const sheet = getSheet("ユーザ情報");
   if (findRow(sheet, userDataArray[0], 1) != 0) {
-    return false;
+    throw new Error("IDがすでに存在しています");
   } else {
     sheet.appendRow(userDataArray);
     return userDataArray;
@@ -74,13 +74,13 @@ function submitUserData(userDataArray) {
 
 /**
  * シートの指定した列に指定した値と同じ値があるかどうかを判定する
- * @param {*} sheet 
- * @param {*} value 
- * @param {*} col 
+ * @param {*} sheet
+ * @param {*} value
+ * @param {*} col
  * @return {*} 同じ値がある場合、その行番号を返す、ない場合、0を返す
  */
 function findRow(sheet, value, col) {
-  const data = sheet.getDataRange().getValues();
+  let data = sheet.getDataRange().getValues();
   data.shift();
   for (let i = 0; i < data.length; i++) {
     if (data[i][col - 1] === value) {
@@ -106,7 +106,7 @@ function getEventInfo() {
 
 /**
  * 日付のフォーマットを変更する
- * @param {*} date 
+ * @param {*} date
  * @return {*} 変更後の日付を返す
  */
 function convertDate(date) {
@@ -116,8 +116,8 @@ function convertDate(date) {
 /**
  * ユーザIDからイベントIDを取得する
  * @param {*} sheet
- * @param {*} userId 
- * @return {*} イベントIDを返す 
+ * @param {*} userId
+ * @return {*} イベントIDを返す
  */
 function getEventId(userId) {
   const sheet = getSheet("申込状況");
@@ -126,7 +126,7 @@ function getEventId(userId) {
   for (let i = 0; i < data.length; i++) {
     if (userId === data[i][0]) {
       userEventData.push(data[i][1]);
-    }　else {
+    } else {
       userEventData.push(0);
     }
   }
@@ -135,50 +135,19 @@ function getEventId(userId) {
 
 /**
  * ソート関数
- * @param {*} arr 
+ * @param {*} arr
  * @return {*} ソート後の配列を返す
  */
 function sort(arr) {
   var cnt = arr.length - 1;//ソート範囲
   while (cnt > 0) {
-    for(var i = 0; i < cnt; i++) {
+    for (var i = 0; i < cnt; i++) {
       var j = i + 1;//右の要素と比較
-      if(arr[i] > arr[j]) {
+      if (arr[i] > arr[j]) {
         [arr[i], arr[j]] = [arr[j], arr[i]];
-      } 
+      }
     }
     cnt--;
   }
   return arr;
 }
-
-/**
- * userConfirm()のテストをする
- */
-function userConfirmTest() {
-  console.log(userConfirm("eiwa001","eiwa"));
-}
-
-/**
- * getEventInfo()のテストをする
- */
-function getEventInfoTest() {
-  console.log(getEventInfo());
-}
-
-/**
- * getEventId()のテストをする
- */
-function getEventIdTest() {
-  console.log(getEventId("eiwa001"));
-}
-
-/**
- * submitUserData()をテストする
- */
-function submitUserDataTest() {
-  var data = ["eiwa0011", "b", "c", "d", "e", "f"];
-  console.log(submitUserData(data));
-}
-
-
