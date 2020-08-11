@@ -52,18 +52,6 @@ function userConfirm(id, password) {
 }
 
 /**
- * submitUserData()をテストする
- */
-function submitUserDataTest() {
-  const data = ["eiwa001", "b", "c", "d", "e", "f"];
-  try {
-    submitUserData(data);
-  } catch (e) {
-    console.log(e.message);
-  }
-}
-
-/**
  * ユーザ情報をDBに登録する
  * @param {*} userDataArray id、password、名前、 住所、電話番号、学校名を含む配列
  * IDがDBにすでにある場合errorを返す。
@@ -74,6 +62,7 @@ function submitUserData(userDataArray) {
     throw new Error("IDがすでに存在しています");
   } else {
     sheet.appendRow(userDataArray);
+    return "登録しました";
   }
 }
 
