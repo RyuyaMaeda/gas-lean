@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <?!= include("css"); ?>
+</head>
+
+<body>
+    <h1>ユーザ登録</h1>
+    <table border="0">
+        <tr>
+            <td align="right">ID:</td>
+            <td><input type="text" id="id" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td align="right">PASS:</td>
+            <td><input type="text" id="password" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td align="right">氏名:</td>
+            <td><input type="text" id="name" maxlength="70"></td>
+        </tr>
+        <tr>
+            <td align="right">住所:</td>
+            <td><input type="text" id="address" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td align="right">電話:</td>
+            <td><input type="text" id="phonenumber" maxlength="20"></td>
+        </tr>
+        <tr>
+            <td align="right">学校:</td>
+            <td><input type="text" id="school" maxlength="20"></td>
+        </tr>
+    </table>
+    <button type="submit" name="page" onclick="create()" value="mypage">
+        <font size="3">登録</font>
+    </button></br>
+    <button type="button" name="create" onclick="jump('login')" value="create">
+        <font size="2">戻る</font>
+    </button></br>
+</body>
+<script>
+    // 画面に遷移する
+    function jump(screenName) {
+        google.script.run
+            .withSuccessHandler(createUrl)
+            .withFailureHandler(onFailure)
+            .withUserObject(screenName)
+            .getAppUrl();
+    }
+
+    //サーバ側のgetAppUrl()の失敗時に実行する
+    function onFailure(error) {
+        alert(error.message);
+    }
+
+    //サーバ側のgetAppUrl()の成功時に実行する
+    function createUrl(url, screenName) {
+        window.top.location.href = url + "?page=" + screenName;
+    }
+
+    //新規ユーザ登録する
+    function create() {
+        const id = document.getElementById("id").value;
+        const password = document.getElementById("password").value;
+        const name = document.getElementById("name").value;
+        const address = document.getElementById("address").value;
+        const phoneNumber = document.getElementById("phonenumber").value;
+        const school = document.getElementById("school").value;
+        const userDataArray = [id, password, name, address, phoneNumber, school];
+        if (id.replace(/[\x20\u3000]/g, "").length === 0 || password.replace(/[\x20\u3000]/g, "").length === 0 || name.replace(/[\x20\u3000]/g, "").length === 0 ||
+            address.replace(/[\x20\u3000]/g, "").length === 0 || phoneNumber.replace(/[\x20\u3000]/g, "").length === 0 || school.replace(/[\x20\u3000]/g, "").length === 0) {
+            alert("未入力の項目があります。");
+            return;
+        }
+        try {
+            google.script.run
+                .withSuccessHandler(createData)
+                .withFailureHandler(onFailure)
+                .submitUserData(userDataArray);
+        } catch (e) {
+            alert(e.message);
+        }
+    }
+
+    //サーバ側のsubmitUserData関数が正常実行された時に実行する
+    function createData() {
+        alert("登録が完了しました");
+        jump("mypage");
+    }
+</script>
+
+</html>

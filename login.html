@@ -21,7 +21,7 @@
             <td><button type="submit" name="page" onclick="userConfirm()" value="mypage">
                     <font size="2">ログイン</font>
                 </button></td>
-            <td><button type="button" name="create" value="create">
+            <td><button type="button" name="create" onclick="jump(this.value)" value="create">
                     <font size="2">新規登録</font>
                 </button></td>
         </tr>
@@ -31,9 +31,9 @@
     // 画面に遷移する
     function jump(screenName) {
         google.script.run
-        .withSuccessHandler(createUrl)
-        .withUserObject(screenName)
-        .getAppUrl();
+            .withSuccessHandler(createUrl)
+            .withUserObject(screenName)
+            .getAppUrl();
     }
 
     //サーバ側のgetAppUrl()の失敗時に実行する
@@ -42,19 +42,22 @@
     }
 
     //サーバ側のgetAppUrl()の成功時に実行する
-    function createUrl(url,screenName) {
+    function createUrl(url, screenName) {
         window.top.location.href = url + "?page=" + screenName;
     }
+
+    //入力情報を確認する
     function userConfirm() {
         const id = document.getElementById("id").value;
         const password = document.getElementById("password").value;
         // 半角スペースと全角スペースを削除している
-        if(id.replace(/[\x20\u3000]/g,"").length === 0 || password.replace(/[\x20\u3000]/g,"").length === 0){
-           alert("未入力の項目があります。");
-           return;
-         }
+        if (id.replace(/[\x20\u3000]/g, "").length === 0 || password.replace(/[\x20\u3000]/g, "").length === 0) {
+            alert("未入力の項目があります。");
+            return;
+        }
         google.script.run.withSuccessHandler(login).userConfirm(id, password);
     }
+
     function login(login_check) {
         if (login_check) {
             jump("mypage");
