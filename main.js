@@ -65,7 +65,7 @@ function submitUserDataTest() {
  * @return {*} IDがDBにすでにある場合falseをない場合に、trueを返す。
  */
 function submitUserData(userDataArray) {
-  const sheet = getSheet('ユーザ情報');
+  const sheet = getSheet("ユーザ情報");
   if (findRow(sheet, userDataArray[0], 1) != 0) {
     return false;
   } else {

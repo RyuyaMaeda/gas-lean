@@ -3,7 +3,7 @@
 
 <head>
     <base target="_top">
-    <?!= include('css'); ?>
+    <?!= include("css"); ?>
 </head>
 
 <body>
@@ -63,12 +63,12 @@
 
     //新規ユーザ登録する
     function create() {
-        const id = document.getElementById('id').value;
-        const password = document.getElementById('password').value;
-        const name = document.getElementById('name').value;
-        const address = document.getElementById('address').value;
-        const phoneNumber = document.getElementById('phonenumber').value;
-        const school = document.getElementById('school').value;
+        const id = document.getElementById("id").value;
+        const password = document.getElementById("password").value;
+        const name = document.getElementById("name").value;
+        const address = document.getElementById("address").value;
+        const phoneNumber = document.getElementById("phonenumber").value;
+        const school = document.getElementById("school").value;
         const userDataArray = [id, password, name, address, phoneNumber, school];
         if (id.replace(/[\x20\u3000]/g, "").length === 0 || password.replace(/[\x20\u3000]/g, "").length === 0 || name.replace(/[\x20\u3000]/g, "").length === 0 ||
             address.replace(/[\x20\u3000]/g, "").length === 0 || phoneNumber.replace(/[\x20\u3000]/g, "").length === 0 || school.replace(/[\x20\u3000]/g, "").length === 0) {
@@ -83,7 +83,7 @@
     function createCheck(check) {
         if (check) {
             alert("登録が完了しました");
-            jump('mypage');
+            jump("mypage");
         } else {
             alert("IDがすでに存在しています");
         }
