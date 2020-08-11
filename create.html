@@ -46,7 +46,7 @@
     function jump(screenName) {
         google.script.run
             .withSuccessHandler(createUrl)
-            .withFailureHander(onFailure)
+            .withFailureHandler(onFailure)
             .withUserObject(screenName)
             .getAppUrl();
     }
@@ -75,19 +75,20 @@
             alert("未入力の項目があります。");
             return;
         }
-        google.script.run
-            .withSuccessHandler(createCheck)
-            .withFailureHander(onFailure)
-            .submitUserData(userDataArray);
+        try {
+            google.script.run
+                .withSuccessHandler(createData)
+                .withFailureHandler(onFailure)
+                .submitUserData(userDataArray);
+        } catch (e) {
+            alert(e.message);
+        }
     }
 
-    function createCheck(check) {
-        if (check) {
-            alert("登録が完了しました");
-            jump("mypage");
-        } else {
-            alert("IDがすでに存在しています");
-        }
+    //サーバ側のsubmitUserData関数が正常実行された時に実行する
+    function createData() {
+        alert("登録が完了しました");
+        jump("mypage");
     }
 </script>
 
