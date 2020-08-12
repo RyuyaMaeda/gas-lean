@@ -123,24 +123,22 @@ function convertDate(date) {
  * ユーザIDからイベントIDを取得する
  * @param {*} sheet
  * @param {*} userId
- * @return {*} イベントIDを返す
+ * @return {*} イベントごとの申し込み状況(TRUE or FALSE)の配列を返す
  */
 function getEventId(userId) {
   const sheet = getSheet("申込状況");
-  const data = sheet.getRange(2, 2, sheet.getLastRow() - 1, 2).getValues();
-  let userEventData = [];
+  const data = sheet.getDataRange().getValues();
+  data.shift();
+  userDataArray = new Array(data[0].length - 1);
   for (let i = 0; i < data.length; i++) {
     if (userId === data[i][0]) {
-      userEventData.push(data[i][1]);
-    } else {
-      userEventData.push(0);
+      for (let j = 1; j <= userDataArray.length; j++) {
+        userDataArray[j - 1] = data[i][j];
+      }
+      return userDataArray;
     }
   }
-  return userEventData;
 }
-
-
-
 
 /**
  * ソート関数
