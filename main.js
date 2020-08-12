@@ -53,17 +53,44 @@ function userConfirm(id, password) {
 
 /**
  * ユーザ情報をDBに登録する
+ * @param {*} userDataArray
+ */
+function submitUserData(userDataArray) {
+  try {
+    submitUserDataOnUserInfoSheet(userDataArray);
+    submitUserDataOnRequestSheet(userDataArray[0]);
+  } catch (e) {
+    throw new Error("IDがすでに存在しています")
+  }
+}
+
+/**
+ * 新規登録した時にuser情報をユーザ情報シートに登録する
  * @param {*} userDataArray id、password、名前、 住所、電話番号、学校名を含む配列
  * IDがDBにすでにある場合errorを返す。
  */
-function submitUserData(userDataArray) {
+function submitUserDataOnUserInfoSheet(userDataArray) {
   const sheet = getSheet("ユーザ情報");
   if (findRow(sheet, userDataArray[0], 1) != 0) {
     throw new Error("IDがすでに存在しています");
   } else {
     sheet.appendRow(userDataArray);
-    return "登録しました";
+    return;
   }
+}
+
+/**
+ * 新規登録した時にuser情報を申し込みシートに記入する
+ */
+function submitUserDataOnRequestSheet(userId) {
+  const sheet = getSheet("申込状況");
+  colNumber = sheet.getLastColumn();
+  let userDataArray = [];
+  userDataArray.push(userId);
+  for (let i = 0; i < colNumber - 1; i++) {
+    userDataArray.push(false);
+  }
+  sheet.appendRow(userDataArray);
 }
 
 /**
@@ -82,18 +109,4 @@ function findRow(sheet, value, col) {
     }
   }
   return 0;
-}
-
-/**
- * 新規登録した時にuseridを申し込みシートに記入する
- */
-function createUserIdOnRequestSheet(userId) {
-  const sheet = getSheet("申込状況");
-  colNumber = sheet.getLastColumn();
-  let userDataArray = [];
-  userDataArray.push(userId);
-  for (let i = 0; i < colNumber - 1; i++) {
-    userDataArray.push(false);
-  }
-  sheet.appendRow(userDataArray);
 }
