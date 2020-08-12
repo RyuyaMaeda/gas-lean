@@ -42,13 +42,13 @@
     </button></br>
 </body>
 <script>
+
     // 画面に遷移する
     function jump(screenName, userId, userName) {
         const nameArray = [screenName, userId, userName];
         google.script.run
             .withSuccessHandler(createUrl)
-            .withFailureHandler(onFailure)
-            .withUserObject(screenName)
+            .withUserObject(nameArray)
             .getAppUrl();
     }
 
@@ -59,6 +59,7 @@
 
     //サーバ側のgetAppUrl()の成功時に実行する
     function createUrl(url, nameArray) {
+        alert(nameArray);
         if (nameArray[1] == null) {
             window.top.location.href = url + "?page=" + nameArray[0];
         } else {
@@ -92,7 +93,7 @@
 
     //サーバ側のsubmitUserData関数が正常実行された時に実行する
     function createData(create_check) {
-        alert(create_check);
+        alert("登録が完了しました");
         jump("mypage", create_check[0], create_check[2]);
     }
 </script>

@@ -3,10 +3,16 @@ function include(css) {
 }
 
 function doGet(e) {
-  const page = e.parameter["page"];
+  var page = e.parameter["page"];
   if (page === "mypage") {
     const template = HtmlService.createTemplateFromFile("mypage");
-    template.mydata = [e.parameter["username"], e.parameter["userid"]];
+    let eventDataArray = getEventInfo();
+    eventDataArray.shift();
+    template.eventDataArray = eventDataArray;
+    let userName = e.parameter["username"];
+    template.userName = userName;
+    let id = e.parameter["userid"];
+    template.userId = id;
     return template.evaluate();
   } else if (page === "create") {
     return HtmlService.createTemplateFromFile("create").evaluate();
@@ -132,6 +138,9 @@ function getEventId(userId) {
   }
   return userEventData;
 }
+
+
+
 
 /**
  * ソート関数
