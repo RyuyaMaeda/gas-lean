@@ -25,40 +25,59 @@
         <tr>
             <td><?= eventDataArray[i][2] ?></td>
             <td><a href="https://script.google.com/a/esm.co.jp/macros/s/AKfycby8bHPUrCKgCf7uQm0wj2jlz15LVEz3-FXlXAo46Q/dev?page=eventDetails&eventNumber=<?= i ?>&userId=<?= userId ?>"><?= eventDataArray[i][1] ?></a></td>
-            <td><input id="<?= i ?>" class="button" type="button" value="申込">
-                <input id="cancel<?= i ?>" class="button" type="button" value="取り消し">
+            <td>
+                <input id="<?= i ?>" class="button" type="button" value="申込" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)">
+                <input id="cancel<?= i ?>" class="button" type="button" value="キャンセル" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)" disable>
             </td>
         </tr>
         <? } ?>
     </table>
-    <button type="button" name="back" onclick="jump('login')" value="back">
-        <font size="2">戻る</font>
+    <button type=" button" name="back" onclick="jump('login')" value="back">
+        <font size="2">ログアウト</font>
     </button>
 </body>
 <script>
-    //ページ読み込み時に実行する
-    addEventListener('load', function () { client_getEventId() });
+    // 申し込みボタンとキャンセルボタンの切り替えをして、イベントの申し込み情報を更新する
+    function changeToInputFunction(buttonId, cancelButtonId) {
+        // alert(buttonId);
+        // alert(cancelButtonId);
+        let button = document.getElementById(buttonId);
+        let cancelButton = document.getElementById(cancelButtonId);
+        if (button.disabled === true) {
+            button.disabled = false;     //キャンセルするとき
+            cancelButton.disabled = true;
 
+        } else {
+            button.disabled = true;        //申し込むとき
+            cancelButton.disabled = false;
+        }
+        client_eventRequestChange(<?= userId ?>, Number(buttonId) + 1);
+    }
+    // //ページ読み込み時に実行する
+    addEventListener('load', function () { client_getEventInfo(<?= userId ?>) });
 
-    //userIdからイベントIdを取得する関数
-    function client_getEventId() {
-        //userIdを取得する
-        const userId = document.getElementById("myid").outerHTML;
-        //  alert("userid=" + userId);
+    //イベント申し込み情報を取得する
+    function client_getEventInfo(userId) {
         google.script.run
-            .withSuccessHandler(client_getEventInfo)
-            .withFailureHandler(onFailure)
-            .getEventId(userId);
+            .withSuccessHandler(buttonSetter)
+            .getEventId(userId)
     }
 
-    // イベントの詳細情報を取得する
-    function client_getEventInfo(eventId) {
-        //  alert("eventId=" + eventId);
+    //ボタンのdisabled設定する
+    function buttonSetter(eventIdList) {
+        //alert(eventIdList.length);
+        for (let i = 0; i < eventIdList.length; i++) {
+            document.getElementById(i).disabled = eventIdList[i];
+            document.getElementById(("cancel" + i)).disabled = !(eventIdList[i]);
+        }
+    }
+
+    //各イベントの申し込み情報を更新する
+    function client_eventRequestChange(userId, eventId) {
+        //alert(userId);
+        // alert(eventId);
         google.script.run
-            .withSuccessHandler(createTableRow)
-            .withFailureHandler(onFailure)
-            .withUserObject(eventId)
-            .getEventInfo();
+            .eventRequestChange(userId, eventId);
     }
 
     // 画面に遷移する

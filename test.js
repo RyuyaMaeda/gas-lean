@@ -36,5 +36,13 @@ function getEventInfoTest() {
  * getEventId()のテストをする
  */
 function getEventIdTest() {
-  console.log(getEventId("eiwa001"));
+  let eventIdList = getEventId("eiwa001");
+  console.log(eventIdList[0]);
+}
+
+/**
+ * eventRequestChangeのテストをする
+ */
+function eventRequestChangeTest() {
+  eventRequestChange("eiwa001", 3);
 }

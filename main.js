@@ -12,7 +12,9 @@ function doGet(e) {
     let userName = e.parameter["username"];
     template.userName = userName;
     let id = e.parameter["userid"];
+    let eventIdList = getEventId(id);
     template.userId = id;
+    template.eventIdList = eventIdList;
     return template.evaluate();
   } else if (page === "create") {
     return HtmlService.createTemplateFromFile("create").evaluate();
@@ -120,7 +122,7 @@ function convertDate(date) {
 }
 
 /**
- * ユーザIDからイベントIDを取得する
+ * ユーザIDから登録しているイベントの情報を取得する
  * @param {*} sheet
  * @param {*} userId
  * @return {*} イベントごとの申し込み状況(TRUE or FALSE)の配列を返す
@@ -157,4 +159,21 @@ function sort(arr) {
     cnt--;
   }
   return arr;
+}
+
+/**
+ * 申し込み状況を更新する
+ * @param {*} userId
+ * @param {*} eventId
+ */
+function eventRequestChange(userId, eventId) {
+  const sheet = getSheet("申込状況");
+  const data = sheet.getDataRange().getValues();
+  data.shift();
+  for (let i = 0; i < data.length; i++) {
+    if (userId === data[i][0]) {
+      // console.log(data[i][eventId])
+      sheet.getRange(i + 2, eventId + 1).setValue(!(data[i][eventId]));
+    }
+  }
 }
