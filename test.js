@@ -46,3 +46,10 @@ function getEventIdTest() {
 function eventRequestChangeTest() {
   eventRequestChange("eiwa001", 3);
 }
+/*
+ * submitUserDataをテストする
+ */
+function submitUserDataTest() {
+  let userDataArray = ["eiwa006", "eiwa", "a", "a", "a", "a"];
+  submitUserData(userDataArray);
+}

@@ -61,16 +61,29 @@ function userConfirm(id, password) {
     if (id === userDataArray[i][0] && password === userDataArray[i][1]) {
       return userDataArray[i];
     }
-    return false;
   }
+  return false;
 }
 
 /**
  * ユーザ情報をDBに登録する
+ * @param {*} userDataArray
+ */
+function submitUserData(userDataArray) {
+  try {
+    submitUserDataOnRequestSheet(userDataArray[0]);
+    return submitUserDataOnUserInfoSheet(userDataArray);
+  } catch (e) {
+    throw new Error("IDがすでに存在しています")
+  }
+}
+
+/**
+ * 新規登録した時にuser情報をユーザ情報シートに登録する
  * @param {*} userDataArray id、password、名前、 住所、電話番号、学校名を含む配列
  * @return {*} IDがDBに登録されていない場合、userDataArrayを返す。IDがDBにすでにある場合errorを返す。
  */
-function submitUserData(userDataArray) {
+function submitUserDataOnUserInfoSheet(userDataArray) {
   const sheet = getSheet("ユーザ情報");
   if (findRow(sheet, userDataArray[0], 1) != 0) {
     throw new Error("IDがすでに存在しています");
@@ -78,6 +91,20 @@ function submitUserData(userDataArray) {
     sheet.appendRow(userDataArray);
     return userDataArray;
   }
+}
+
+/**
+ * 新規登録した時にuser情報を申し込みシートに記入する
+ */
+function submitUserDataOnRequestSheet(userId) {
+  const sheet = getSheet("申込状況");
+  colNumber = sheet.getLastColumn();
+  let userDataArray = [];
+  userDataArray.push(userId);
+  for (let i = 0; i < colNumber - 1; i++) {
+    userDataArray.push(false);
+  }
+  sheet.appendRow(userDataArray);
 }
 
 /**

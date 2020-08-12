@@ -38,11 +38,6 @@
             .getAppUrl();
     }
 
-    //サーバ側のgetAppUrl()の失敗時に実行する
-    function onFailure(error) {
-        alert(error.message);
-    }
-
     //サーバ側のgetAppUrl()の成功時に実行する
     function createUrl(url, nameArray) {
         if (nameArray[1] == null) {
