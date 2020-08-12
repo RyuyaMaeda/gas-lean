@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <?!= include("css"); ?>
+  <base target="_top">
+</head>
+
+<body>
+  <div id="pair">
+    <div id="mypage">
+      <font size="5">マイページ</font>
+    </div>
+    <div id="myname">
+      <font size="3"><?= getData(userName) ?></font>
+    </div>
+  </div>
+  <table id="mypage_table">
+    <tr>
+      <td>イベント名</td>
+      <td>インターンシッププログラミング体験</td>
+    </tr>
+    <tr>
+      <td>実施日</td>
+      <td>２０２０年８月６日</td>
+    </tr>
+    <tr>
+      <td>詳細</td>
+      <td>Google Apps Script で簡単Webアプリケーションを作ります。
+        プログラミングはグループワークで行います。
+      </td>
+    </tr>
+    <tr>
+      <td>申込期限</td>
+      <td>２０２０年７月３０日</td>
+    </tr>
+  </table>
+  <button type=" button" name="back" onclick="jump('login')" value="back">
+    <font size="2">戻る</font>
+  </button>
+</body>
+<script>
+  // 画面に遷移する
+  function jump(screenName) {
+    google.script.run
+      .withSuccessHandler(createUrl)
+      .withUserObject(screenName)
+      .getAppUrl();
+  }
+
+  //サーバ側の関数の失敗時に実行する
+  function onFailure(error) {
+    alert(error.message);
+  }
+
+  //サーバ側の関数の成功時に実行する
+  function createUrl(url, screenName) {
+    window.top.location.href = url + "?page=" + screenName;
+  }
+
+</script>
+
+</html>
