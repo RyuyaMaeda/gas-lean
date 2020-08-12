@@ -3,6 +3,7 @@
 
 <head>
     <?!= include("css"); ?>
+    <? var url= getAppUrl() ?>
     <base target="_top">
 </head>
 
@@ -12,7 +13,7 @@
             <font size="5">マイページ</font>
         </div>
         <div id="myname">
-            <font size="3"><?= getData(userName) ?></font>
+            <font size="5"><?= getData(userName) ?></font>
         </div>
     </div>
     <table id="mypage_table">
@@ -24,7 +25,7 @@
         <? for(var i = 0;i < eventDataArray.length;i++){ ?>
         <tr>
             <td><?= eventDataArray[i][2] ?></td>
-            <td><a href="https://script.google.com/a/esm.co.jp/macros/s/AKfycby8bHPUrCKgCf7uQm0wj2jlz15LVEz3-FXlXAo46Q/dev?page=eventDetails&eventNumber=<?= i ?>&userId=<?= userId ?>"><?= eventDataArray[i][1] ?></a></td>
+            <td><a href="https://script.google.com/a/macros/esm.co.jp/s/AKfycbw90zArXb4NCHbjVIItxMC9X2FDDhh9CnM1scLUKwrM/dev?page=eventDetail&eventNumber=<?= i+1 ?>&userId=<?= userId ?>&userName=<?= userName ?>"><?= eventDataArray[i][1] ?></a></td>
             <td>
                 <input id="<?= i ?>" class="button" type="button" value="申込" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)">
                 <input id="cancel<?= i ?>" class="button" type="button" value="キャンセル" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)" disable>

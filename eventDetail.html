@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <?!= include("css"); ?>
+  <base target="_top">
+</head>
+
+<body>
+  <div id="eventDetail">
+    <div id="pair">
+      <div id="mypage">
+        <font size="5">イベント詳細</font>
+      </div>
+      <div id="myname">
+        <font size="5"><?= getData(userName) ?></font>
+      </div>
+    </div>
+    <table id="eventDetail_table">
+      <tr>
+        <td>イベント名</td>
+        <td><?= eventDataArray[1]?></td>
+      </tr>
+      <tr>
+        <td>実施日</td>
+        <td><?= eventDataArray[2]?></td>
+      </tr>
+      <tr>
+        <td>詳細</td>
+        <td><?= eventDataArray[3]?></td>
+      </tr>
+      <tr>
+        <td>申込期限</td>
+        <td><?= eventDataArray[4]?></td>
+      </tr>
+    </table>
+    <button type=" button" name="back" onclick="jump('login')" value="back">
+      <font size="2">戻る</font>
+    </button>
+</body>
+</div>
+<script>
+  // 画面に遷移する
+  function jump(screenName) {
+    google.script.run
+      .withSuccessHandler(createUrl)
+      .withUserObject(screenName)
+      .getAppUrl();
+  }
+
+  //サーバ側の関数の失敗時に実行する
+  function onFailure(error) {
+    alert(error.message);
+  }
+
+  //サーバ側の関数の成功時に実行する
+  function createUrl(url, screenName) {
+    window.top.location.href = url + "?page=" + screenName;
+  }
+
+</script>
+
+</html>

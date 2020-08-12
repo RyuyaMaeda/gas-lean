@@ -26,6 +26,14 @@ function findRowTest() {
 }
 
 /**
+ * getEventDetail()をテストする
+ * @param {*} eventId
+ */
+function getEventDetailTest() {
+  console.log(getEventDetail(2));
+}
+
+/**
  * getEventInfo()のテストをする
  */
 function getEventInfoTest() {
@@ -46,6 +54,7 @@ function getEventIdTest() {
 function eventRequestChangeTest() {
   eventRequestChange("eiwa001", 3);
 }
+
 /*
  * submitUserDataをテストする
  */

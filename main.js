@@ -9,16 +9,29 @@ function doGet(e) {
     let eventDataArray = getEventInfo();
     eventDataArray.shift();
     template.eventDataArray = eventDataArray;
-    let userName = e.parameter["username"];
+    const userName = e.parameter["userName"];
     template.userName = userName;
     let id = e.parameter["userid"];
-    let eventIdList = getEventId(id);
     template.userId = id;
+    let eventIdList = getEventId(id);
     template.eventIdList = eventIdList;
     return template.evaluate();
   } else if (page === "create") {
     return HtmlService.createTemplateFromFile("create").evaluate();
-  } else {
+  } else if (page === "eventDetail") {
+    const template = HtmlService.createTemplateFromFile("eventDetail");
+    let eventDataArray = getEventInfo();
+    let eventNumber = e.parameter["eventNumber"];
+    let eventDetailArray = eventDataArray[eventNumber];
+    template.eventNumber = eventNumber;
+    template.eventDataArray = eventDetailArray;
+    let id = e.parameter["userid"];
+    template.userId = id;
+    const userName = e.parameter["userName"];
+    template.userName = userName;
+    return template.evaluate();
+  }
+  else {
     return HtmlService.createTemplateFromFile("login").evaluate();
   }
 }
@@ -123,6 +136,18 @@ function findRow(sheet, value, col) {
     }
   }
   return 0;
+}
+/**
+ * イベントIDに応じたイベント詳細情報を取得する
+ * @return {*} イベント詳細情報の配列を返す
+ */
+function getEventDetail(eventId) {
+  const sheet = getSheet("イベント詳細");
+  let data = sheet.getDataRange().getValues();
+  let eventData = data[eventId];
+  eventData[2] = convertDate(eventData[2]);
+  eventData[4] = convertDate(eventData[4]);
+  return eventData;
 }
 
 /**
