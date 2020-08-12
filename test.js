@@ -24,3 +24,10 @@ function findRowTest() {
   const sheet = getSheet("ユーザ情報");
   console.log(findRow(sheet, "eiwa001", 1));
 }
+
+/**
+ * createUserIdOnRequestSheetをテストする
+ */
+function createUserIdOnRequestSheetTest() {
+  createUserIdOnRequestSheet("eiwa006");
+}

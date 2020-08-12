@@ -83,3 +83,17 @@ function findRow(sheet, value, col) {
   }
   return 0;
 }
+
+/**
+ * 新規登録した時にuseridを申し込みシートに記入する
+ */
+function createUserIdOnRequestSheet(userId) {
+  const sheet = getSheet("申込状況");
+  colNumber = sheet.getLastColumn();
+  let userDataArray = [];
+  userDataArray.push(userId);
+  for (let i = 0; i < colNumber - 1; i++) {
+    userDataArray.push(false);
+  }
+  sheet.appendRow(userDataArray);
+}
