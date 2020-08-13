@@ -84,7 +84,7 @@ function submitUserDataOnUserInfoSheet(userDataArray) {
  */
 function submitUserDataOnRequestSheet(userId) {
   const sheet = getSheet("申込状況");
-  colNumber = sheet.getLastColumn();
+  const colNumber = sheet.getLastColumn();
   let userDataArray = [];
   userDataArray.push(userId);
   for (let i = 0; i < colNumber - 1; i++) {
