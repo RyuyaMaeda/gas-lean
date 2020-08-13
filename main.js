@@ -1,3 +1,6 @@
+const requestSheet = getSheet("申込状況");
+const userInfoSheet = getSheet("ユーザ情報");
+
 function include(css) {
   return HtmlService.createHtmlOutputFromFile(css).getContent();
 }
@@ -40,10 +43,9 @@ function getAppUrl() {
  * @return {*} 合っていたらtrueを、間違っていたらfalseを返す
  */
 function userConfirm(id, password) {
-  const sheet = getSheet("ユーザ情報");
-  const userData = sheet.getDataRange().getValues();
+  const userData = userInfoSheet.getDataRange().getValues();
   userData.shift();
-  for (let i = 0; i < sheet.getLastRow() - 1; i++) {
+  for (let i = 0; i < userInfoSheet.getLastRow() - 1; i++) {
     if (id === userData[i][0] && password === userData[i][1]) {
       return true;
     }
@@ -70,11 +72,10 @@ function submitUserData(userDataArray) {
  * IDがDBにすでにある場合errorを返す。
  */
 function submitUserDataOnUserInfoSheet(userDataArray) {
-  const sheet = getSheet("ユーザ情報");
-  if (findRow(sheet, userDataArray[0], 1) != 0) {
+  if (findRow(userInfoSheet, userDataArray[0], 1) != 0) {
     throw new Error("IDがすでに存在しています");
   } else {
-    sheet.appendRow(userDataArray);
+    userInfoSheet.appendRow(userDataArray);
     return;
   }
 }
@@ -83,14 +84,13 @@ function submitUserDataOnUserInfoSheet(userDataArray) {
  * 新規登録した時にuser情報を申し込みシートに記入する
  */
 function submitUserDataOnRequestSheet(userId) {
-  const sheet = getSheet("申込状況");
-  const colNumber = sheet.getLastColumn();
+  const colNumber = requestSheet.getLastColumn();
   let userDataArray = [];
   userDataArray.push(userId);
   for (let i = 0; i < colNumber - 1; i++) {
     userDataArray.push(false);
   }
-  sheet.appendRow(userDataArray);
+  requestSheet.appendRow(userDataArray);
 }
 
 /**

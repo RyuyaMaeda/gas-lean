@@ -29,6 +29,6 @@ function findRowTest() {
  * submitUserDataをテストする
  */
 function submitUserDataTest() {
-  let userDataArray = ["eiwa006", "eiwa", "a", "a", "a", "a"];
+  let userDataArray = ["test8", "eiwa", "a", "a", "a", "a"];
   submitUserData(userDataArray);
 }
