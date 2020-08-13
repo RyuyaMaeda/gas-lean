@@ -27,24 +27,33 @@
       </tr>
       <tr>
         <td>詳細</td>
-        <td><?= eventDataArray[3]?></td>
+        <td>
+          <? let details = eventDataArray[3].split("\n")?>
+          <? for(var i = 0;i < details.length;i++){ ?>
+          <?= details[i] ?>
+          <? if(i != details.length-1){ ?>
+          <br>
+          <? } ?>
+          <? } ?>
+        </td>
       </tr>
       <tr>
         <td>申込期限</td>
         <td><?= eventDataArray[4]?></td>
       </tr>
     </table>
-    <button type=" button" name="back" onclick="jump('login')" value="back">
+    <button type=" button" name="back" onclick="jump('mypage',<?= userId ?>,<?= userName ?>)">
       <font size="2">戻る</font>
     </button>
 </body>
 </div>
 <script>
   // 画面に遷移する
-  function jump(screenName) {
+  function jump(screenName, userId, userName) {
+    const nameArray = [screenName, userId, userName];
     google.script.run
       .withSuccessHandler(createUrl)
-      .withUserObject(screenName)
+      .withUserObject(nameArray)
       .getAppUrl();
   }
 
@@ -53,9 +62,13 @@
     alert(error.message);
   }
 
-  //サーバ側の関数の成功時に実行する
-  function createUrl(url, screenName) {
-    window.top.location.href = url + "?page=" + screenName;
+  //サーバ側のgetAppUrl()の成功時に実行する
+  function createUrl(url, nameArray) {
+    if (nameArray[1] == null) {
+      window.top.location.href = url + "?page=" + nameArray[0];
+    } else {
+      window.top.location.href = url + "?page=" + nameArray[0] + "&userid=" + nameArray[1] + "&userName=" + nameArray[2];
+    }
   }
 
 </script>

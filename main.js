@@ -1,3 +1,7 @@
+const userInfoSheet = getSheet("ユーザ情報");
+const requestSheet = getSheet("申込状況");
+const eventSheet = getSheet("イベント詳細");
+
 function include(css) {
   return HtmlService.createHtmlOutputFromFile(css).getContent();
 }
@@ -25,7 +29,7 @@ function doGet(e) {
     let eventDetailArray = eventDataArray[eventNumber];
     template.eventNumber = eventNumber;
     template.eventDataArray = eventDetailArray;
-    let id = e.parameter["userid"];
+    let id = e.parameter["userId"];
     template.userId = id;
     const userName = e.parameter["userName"];
     template.userName = userName;
@@ -67,10 +71,9 @@ function getAppUrl() {
  * @return {*} 合っていたら氏名を、間違っていたらfalseを返す
  */
 function userConfirm(id, password) {
-  const sheet = getSheet("ユーザ情報");
-  const userDataArray = sheet.getDataRange().getValues();
+  const userDataArray = userInfoSheet.getDataRange().getValues();
   userDataArray.shift();
-  for (let i = 0; i < sheet.getLastRow() - 1; i++) {
+  for (let i = 0; i < userInfoSheet.getLastRow() - 1; i++) {
     if (id === userDataArray[i][0] && password === userDataArray[i][1]) {
       return userDataArray[i];
     }
@@ -97,11 +100,10 @@ function submitUserData(userDataArray) {
  * @return {*} IDがDBに登録されていない場合、userDataArrayを返す。IDがDBにすでにある場合errorを返す。
  */
 function submitUserDataOnUserInfoSheet(userDataArray) {
-  const sheet = getSheet("ユーザ情報");
-  if (findRow(sheet, userDataArray[0], 1) != 0) {
+  if (findRow(userInfoSheet, userDataArray[0], 1) != 0) {
     throw new Error("IDがすでに存在しています");
   } else {
-    sheet.appendRow(userDataArray);
+    userInfoSheet.appendRow(userDataArray);
     return userDataArray;
   }
 }
@@ -110,14 +112,13 @@ function submitUserDataOnUserInfoSheet(userDataArray) {
  * 新規登録した時にuser情報を申し込みシートに記入する
  */
 function submitUserDataOnRequestSheet(userId) {
-  const sheet = getSheet("申込状況");
-  colNumber = sheet.getLastColumn();
+  const colNumber = requestSheet.getLastColumn();
   let userDataArray = [];
   userDataArray.push(userId);
   for (let i = 0; i < colNumber - 1; i++) {
     userDataArray.push(false);
   }
-  sheet.appendRow(userDataArray);
+  requestSheet.appendRow(userDataArray);
 }
 
 /**
@@ -142,8 +143,7 @@ function findRow(sheet, value, col) {
  * @return {*} イベント詳細情報の配列を返す
  */
 function getEventDetail(eventId) {
-  const sheet = getSheet("イベント詳細");
-  let data = sheet.getDataRange().getValues();
+  let data = eventSheet.getDataRange().getValues();
   let eventData = data[eventId];
   eventData[2] = convertDate(eventData[2]);
   eventData[4] = convertDate(eventData[4]);
@@ -155,8 +155,7 @@ function getEventDetail(eventId) {
  * @return {*} イベント詳細情報の配列を返す
  */
 function getEventInfo() {
-  const sheet = getSheet("イベント詳細");
-  let data = sheet.getDataRange().getValues();
+  let data = eventSheet.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
     data[i][2] = convertDate(data[i][2]);
     data[i][4] = convertDate(data[i][4]);
@@ -180,8 +179,7 @@ function convertDate(date) {
  * @return {*} イベントごとの申し込み状況(TRUE or FALSE)の配列を返す
  */
 function getEventId(userId) {
-  const sheet = getSheet("申込状況");
-  const data = sheet.getDataRange().getValues();
+  const data = requestSheet.getDataRange().getValues();
   data.shift();
   userDataArray = new Array(data[0].length - 1);
   for (let i = 0; i < data.length; i++) {
@@ -219,13 +217,12 @@ function sort(arr) {
  * @param {*} eventId
  */
 function eventRequestChange(userId, eventId) {
-  const sheet = getSheet("申込状況");
-  const data = sheet.getDataRange().getValues();
+  const data = requestSheet.getDataRange().getValues();
   data.shift();
   for (let i = 0; i < data.length; i++) {
     if (userId === data[i][0]) {
       // console.log(data[i][eventId])
-      sheet.getRange(i + 2, eventId + 1).setValue(!(data[i][eventId]));
+      requestSheet.getRange(i + 2, eventId + 1).setValue(!(data[i][eventId]));
     }
   }
 }

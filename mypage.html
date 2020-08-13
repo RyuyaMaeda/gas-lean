@@ -82,7 +82,7 @@
     }
 
     // 画面に遷移する
-    function jump(screenName) {
+    function jump(screenName, nameArray) {
         google.script.run
             .withSuccessHandler(createUrl)
             .withUserObject(screenName)
