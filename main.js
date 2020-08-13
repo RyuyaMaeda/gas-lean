@@ -2,6 +2,7 @@ const userInfoSheet = getSheet("ユーザ情報");
 const requestSheet = getSheet("申込状況");
 const eventSheet = getSheet("イベント詳細");
 
+
 function include(css) {
   return HtmlService.createHtmlOutputFromFile(css).getContent();
 }
