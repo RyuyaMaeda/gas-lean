@@ -7,7 +7,7 @@ function include(css) {
 }
 
 function doGet(e) {
-  var page = e.parameter["page"];
+  let page = e.parameter["page"];
   if (page === "mypage") {
     const template = HtmlService.createTemplateFromFile("mypage");
     let eventDataArray = getEventInfo();
@@ -190,25 +190,6 @@ function getEventId(userId) {
       return userDataArray;
     }
   }
-}
-
-/**
- * ソート関数
- * @param {*} arr
- * @return {*} ソート後の配列を返す
- */
-function sort(arr) {
-  var cnt = arr.length - 1;//ソート範囲
-  while (cnt > 0) {
-    for (var i = 0; i < cnt; i++) {
-      var j = i + 1;//右の要素と比較
-      if (arr[i] > arr[j]) {
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-    }
-    cnt--;
-  }
-  return arr;
 }
 
 /**

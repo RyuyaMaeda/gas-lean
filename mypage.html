@@ -3,7 +3,7 @@
 
 <head>
     <?!= include("css"); ?>
-    <? var url= getAppUrl() ?>
+    <? let url= getAppUrl() ?>
     <base target="_top">
 </head>
 
@@ -22,7 +22,7 @@
             <th>内容</th>
             <th>申込状況</th>
         </tr>
-        <? for(var i = 0;i < eventDataArray.length;i++){ ?>
+        <? for(let i = 0;i < eventDataArray.length;i++){ ?>
         <tr>
             <td><?= eventDataArray[i][2] ?></td>
             <td><a href="https://script.google.com/a/macros/esm.co.jp/s/AKfycbw90zArXb4NCHbjVIItxMC9X2FDDhh9CnM1scLUKwrM/dev?page=eventDetail&eventNumber=<?= i+1 ?>&userId=<?= userId ?>&userName=<?= userName ?>"><?= eventDataArray[i][1] ?></a></td>
