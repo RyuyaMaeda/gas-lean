@@ -25,7 +25,7 @@
         <? for(let i = 0;i < eventDataArray.length;i++){ ?>
         <tr>
             <td><?= eventDataArray[i][2] ?></td>
-            <td><a href="https://script.google.com/a/macros/esm.co.jp/s/AKfycbw90zArXb4NCHbjVIItxMC9X2FDDhh9CnM1scLUKwrM/dev?page=eventDetail&eventNumber=<?= i+1 ?>&userId=<?= userId ?>&userName=<?= userName ?>"><?= eventDataArray[i][1] ?></a></td>
+            <td><a href="https://script.google.com/a/macros/esm.co.jp/s/AKfycbw90zArXb4NCHbjVIItxMC9X2FDDhh9CnM1scLUKwrM/dev?page=eventDetail&eventNumber=<?= i+1 ?>&userId=<?= userId ?>"><?= eventDataArray[i][1] ?></a></td>
             <td>
                 <input id="<?= i ?>" class="button" type="button" value="申込" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)">
                 <input id="cancel<?= i ?>" class="button" type="button" value="キャンセル" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)" disable>

@@ -18,6 +18,13 @@ function submitUserDataTest() {
 }
 
 /**
+ * getNameFromId()をテストする
+ */
+function getNameFromIdTest() {
+  console.log(getNameFromId("eiwa001"));
+}
+
+/**
  * findRow()をテストする
  */
 function findRowTest() {

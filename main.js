@@ -13,10 +13,10 @@ function doGet(e) {
     let eventDataArray = getEventInfo();
     eventDataArray.shift();
     template.eventDataArray = eventDataArray;
-    const userName = e.parameter["userName"];
-    template.userName = userName;
     let id = e.parameter["userid"];
     template.userId = id;
+    const userName = getNameFromId(id);
+    template.userName = userName;
     let eventIdList = getEventId(id);
     template.eventIdList = eventIdList;
     return template.evaluate();
@@ -31,7 +31,7 @@ function doGet(e) {
     template.eventDataArray = eventDetailArray;
     let id = e.parameter["userId"];
     template.userId = id;
-    const userName = e.parameter["userName"];
+    const userName = getNameFromId(id);
     template.userName = userName;
     return template.evaluate();
   }
@@ -56,6 +56,19 @@ function getSheet(sheetName) {
   return sheet;
 }
 
+/**
+ * ユーザIDからユーザ氏名を取得する
+ * @param {*} userId
+ * @return {*} ユーザ氏名
+ */
+function getNameFromId(userId) {
+  const userDataArray = userInfoSheet.getDataRange().getValues();
+  for (let i = 0; i < userDataArray.length; i++) {
+    if (userDataArray[i][0] == userId) {
+      return userDataArray[i][2];
+    }
+  }
+}
 /**
  * AppのURLを返す
  */

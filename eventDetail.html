@@ -42,15 +42,15 @@
         <td><?= eventDataArray[4]?></td>
       </tr>
     </table>
-    <button type=" button" name="back" onclick="jump('mypage',<?= userId ?>,<?= userName ?>)">
+    <button type=" button" name="back" onclick="jump('mypage',<?= userId ?>)">
       <font size="2">戻る</font>
     </button>
 </body>
 </div>
 <script>
   // 画面に遷移する
-  function jump(screenName, userId, userName) {
-    const nameArray = [screenName, userId, userName];
+  function jump(screenName, userId) {
+    const nameArray = [screenName, userId];
     google.script.run
       .withSuccessHandler(createUrl)
       .withUserObject(nameArray)
@@ -67,7 +67,7 @@
     if (nameArray[1] == null) {
       window.top.location.href = url + "?page=" + nameArray[0];
     } else {
-      window.top.location.href = url + "?page=" + nameArray[0] + "&userid=" + nameArray[1] + "&userName=" + nameArray[2];
+      window.top.location.href = url + "?page=" + nameArray[0] + "&userid=" + nameArray[1];
     }
   }
 

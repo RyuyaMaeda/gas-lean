@@ -30,8 +30,8 @@
 <script>
 
     // 画面に遷移する
-    function jump(screenName, userId, userName) {
-        const nameArray = [screenName, userId, userName];
+    function jump(screenName, userId) {
+        const nameArray = [screenName, userId];
         google.script.run
             .withSuccessHandler(createUrl)
             .withUserObject(nameArray)
@@ -43,7 +43,7 @@
         if (nameArray[1] == null) {
             window.top.location.href = url + "?page=" + nameArray[0];
         } else {
-            window.top.location.href = url + "?page=" + nameArray[0] + "&userid=" + nameArray[1] + "&userName=" + nameArray[2];
+            window.top.location.href = url + "?page=" + nameArray[0] + "&userid=" + nameArray[1];
         }
     }
 
@@ -71,7 +71,7 @@
         if (!login_check) {
             alert("IDまたはパスワードが間違っています");
         } else {
-            jump("mypage", login_check[0], login_check[2]);
+            jump("mypage", login_check[0]);
         }
     }
 
