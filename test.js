@@ -24,3 +24,11 @@ function findRowTest() {
   const sheet = getSheet("ユーザ情報");
   console.log(findRow(sheet, "eiwa001", 1));
 }
+
+/**
+ * submitUserDataをテストする
+ */
+function submitUserDataTest() {
+  let userDataArray = ["test8", "eiwa", "a", "a", "a", "a"];
+  submitUserData(userDataArray);
+}
