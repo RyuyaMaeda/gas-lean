@@ -85,7 +85,8 @@ function userConfirm(id, password) {
 function submitUserData(userDataArray) {
   try {
     submitUserDataOnRequestSheet(userDataArray[0]);
-    return submitUserDataOnUserInfoSheet(userDataArray);
+    submitUserDataOnUserInfoSheet(userDataArray);
+    return userDataArray;
   } catch (e) {
     throw new Error("IDがすでに存在しています")
   }
@@ -101,7 +102,6 @@ function submitUserDataOnUserInfoSheet(userDataArray) {
     throw new Error("IDがすでに存在しています");
   } else {
     userInfoSheet.appendRow(userDataArray);
-    return userDataArray;
   }
 }
 
