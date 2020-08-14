@@ -2,43 +2,57 @@ const userInfoSheet = getSheet("ユーザ情報");
 const requestSheet = getSheet("申込状況");
 const eventSheet = getSheet("イベント詳細");
 
-
 function include(css) {
   return HtmlService.createHtmlOutputFromFile(css).getContent();
 }
 
 function doGet(e) {
   let page = e.parameter["page"];
-  if (page === "mypage") {
-    const template = HtmlService.createTemplateFromFile("mypage");
-    let eventDataArray = getEventInfo();
-    eventDataArray.shift();
-    template.eventDataArray = eventDataArray;
-    let id = e.parameter["userid"];
-    template.userId = id;
-    const userName = getNameFromId(id);
-    template.userName = userName;
-    let eventIdList = getEventId(id);
-    template.eventIdList = eventIdList;
-    return template.evaluate();
-  } else if (page === "create") {
-    return HtmlService.createTemplateFromFile("create").evaluate();
-  } else if (page === "eventDetail") {
-    const template = HtmlService.createTemplateFromFile("eventDetail");
-    let eventDataArray = getEventInfo();
-    let eventNumber = e.parameter["eventNumber"];
-    let eventDetailArray = eventDataArray[eventNumber];
-    template.eventNumber = eventNumber;
-    template.eventDataArray = eventDetailArray;
-    let id = e.parameter["userId"];
-    template.userId = id;
-    const userName = getNameFromId(id);
-    template.userName = userName;
-    return template.evaluate();
+  if (page == null) {
+    page = "login";
   }
-  else {
-    return HtmlService.createTemplateFromFile("login").evaluate();
-  }
+  let template = HtmlService.createTemplateFromFile(page);
+  userId = e.parameter["userId"];
+  template.userId = userId;
+  template.userName = getNameFromId(userId);
+  let eventDataArray = getEventInfo();
+  let eventNumber = e.parameter["eventNumber"];
+  template.eventNumber = eventNumber;
+  template.eventDetailArray = eventDataArray[eventNumber];
+  eventDataArray.shift();
+  template.eventDataArray = eventDataArray;
+  return template.evaluate();
+  // let page = e.parameter["page"];
+  // if (page === "mypage") {
+  //   const template = HtmlService.createTemplateFromFile("mypage");
+  //   let eventDataArray = getEventInfo();
+  //   eventDataArray.shift();
+  //   template.eventDataArray = eventDataArray;
+  //   let id = e.parameter["userid"];
+  //   template.userId = id;
+  //   const userName = getNameFromId(id);
+  //   template.userName = userName;
+  //   let eventIdList = getEventId(id);
+  //   template.eventIdList = eventIdList;
+  //   return template.evaluate();
+  // } else if (page === "create") {
+  //   return HtmlService.createTemplateFromFile("create").evaluate();
+  // } else if (page === "eventDetail") {
+  //   const template = HtmlService.createTemplateFromFile("eventDetail");
+  //   let eventDataArray = getEventInfo();
+  //   let eventNumber = e.parameter["eventNumber"];
+  //   let eventDetailArray = eventDataArray[eventNumber];
+  //   template.eventNumber = eventNumber;
+  //   template.eventDataArray = eventDetailArray;
+  //   let id = e.parameter["userId"];
+  //   template.userId = id;
+  //   const userName = getNameFromId(id);
+  //   template.userName = userName;
+  //   return template.evaluate();
+  // }
+  // else {
+  //   return HtmlService.createTemplateFromFile("login").evaluate();
+  // }
 }
 
 function getData(mydata) {

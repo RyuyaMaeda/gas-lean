@@ -19,16 +19,16 @@
     <table id="eventDetail_table">
       <tr>
         <td>イベント名</td>
-        <td><?= eventDataArray[1]?></td>
+        <td><?= eventDetailArray[1]?></td>
       </tr>
       <tr>
         <td>実施日</td>
-        <td><?= eventDataArray[2]?></td>
+        <td><?= eventDetailArray[2]?></td>
       </tr>
       <tr>
         <td>詳細</td>
         <td>
-          <? let details = eventDataArray[3].split("\n")?>
+          <? let details = eventDetailArray[3].split("\n")?>
           <? for(let i = 0;i < details.length;i++){ ?>
           <?= details[i] ?>
           <? if(i != details.length-1){ ?>
@@ -39,7 +39,7 @@
       </tr>
       <tr>
         <td>申込期限</td>
-        <td><?= eventDataArray[4]?></td>
+        <td><?= eventDetailArray[4]?></td>
       </tr>
     </table>
     <button type=" button" name="back" onclick="jump('mypage',<?= userId ?>)">
@@ -67,7 +67,7 @@
     if (nameArray[1] == null) {
       window.top.location.href = url + "?page=" + nameArray[0];
     } else {
-      window.top.location.href = url + "?page=" + nameArray[0] + "&userid=" + nameArray[1];
+      window.top.location.href = url + "?page=" + nameArray[0] + "&userId=" + nameArray[1];
     }
   }
 
