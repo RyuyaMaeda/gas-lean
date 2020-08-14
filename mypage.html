@@ -3,64 +3,81 @@
 
 <head>
     <?!= include("css"); ?>
+    <? let url= getAppUrl() ?>
     <base target="_top">
 </head>
 
 <body>
-    <div id="mypage">
-        <font size="5">マイページ</font>
+    <div id="pair">
+        <div id="mypage">
+            <font size="5">マイページ</font>
+        </div>
+        <div id="myname">
+            <font size="5"><?= getData(userName) ?></font>
+        </div>
     </div>
-    <div id="myname">
-        <font size="3">山田太郎さん</font>
-    </div>
-    <table border="1">
+    <table id="mypage_table">
         <tr>
-            <td align="center">
-                <p>日時</p>
-            </td>
-            <td align="center">
-                <p>内容</p>
-            </td>
-            <td align="center">
-                <p>申し込み状況</p>
+            <th>日時</th>
+            <th>内容</th>
+            <th>申込状況</th>
+        </tr>
+        <? for(let i = 0;i < eventDataArray.length;i++){ ?>
+        <tr>
+            <td><?= eventDataArray[i][2] ?></td>
+            <td><a href="https://script.google.com/a/macros/esm.co.jp/s/AKfycbw90zArXb4NCHbjVIItxMC9X2FDDhh9CnM1scLUKwrM/dev?page=eventDetail&eventNumber=<?= i+1 ?>&userId=<?= userId ?>"><?= eventDataArray[i][1] ?></a></td>
+            <td>
+                <input id="<?= i ?>" class="button" type="button" value="申込" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)">
+                <input id="cancel<?= i ?>" class="button" type="button" value="キャンセル" onclick="changeToInputFunction(<?= i ?>,<?="cancel"+ i ?>)" disable>
             </td>
         </tr>
-        <tr>
-            <td nowap align="center">
-                <p>2019/7/9</p>
-            </td>
-            <td nowrap align="center">
-                <p>インターンシップ</p>
-            </td>
-            <td nowrap align="center"><button type="button" name="request" value="request">
-                    <font size="2">申し込み</font>
-                </button>
-                <button type="button" name="request" value="request">
-                    <font size="2">キャンセル</font>
-                </button></td>
-        </tr>
-        <tr>
-            <td nowrap align="center">
-                <p>2021/8/10</p>
-            </td>
-            <td nowrap align="center">
-                <p>筆記試験</p>
-            </td>
-            <td nowrap align="center"><button type="button" name="request" value="request">
-                    <font size="2">申し込み</font>
-                </button>
-                <button type="button" name="request" value="request">
-                    <font size="2">キャンセル</font>
-                </button></td>
-        </tr>
+        <? } ?>
     </table>
-    <button type="button" name="back" onclick="jump('login')" value="back">
-        <font size="2">戻る</font>
+    <button type=" button" name="back" onclick="jump('login')" value="back">
+        <font size="2">ログアウト</font>
     </button>
 </body>
 <script>
+    // 申し込みボタンとキャンセルボタンの切り替えをして、イベントの申し込み情報を更新する
+    function changeToInputFunction(buttonId, cancelButtonId) {
+        let button = document.getElementById(buttonId);
+        let cancelButton = document.getElementById(cancelButtonId);
+        if (button.disabled === true) {
+            button.disabled = false;     //キャンセルするとき
+            cancelButton.disabled = true;
+
+        } else {
+            button.disabled = true;        //申し込むとき
+            cancelButton.disabled = false;
+        }
+        client_eventRequestChange(<?= userId ?>, Number(buttonId) + 1);
+    }
+    // //ページ読み込み時に実行する
+    addEventListener('load', function () { client_getEventInfo(<?= userId ?>) });
+
+    //イベント申し込み情報を取得する
+    function client_getEventInfo(userId) {
+        google.script.run
+            .withSuccessHandler(buttonSetter)
+            .getEventId(userId)
+    }
+
+    //ボタンのdisabled設定する
+    function buttonSetter(eventIdList) {
+        for (let i = 0; i < eventIdList.length; i++) {
+            document.getElementById(i).disabled = eventIdList[i];
+            document.getElementById(("cancel" + i)).disabled = !(eventIdList[i]);
+        }
+    }
+
+    //各イベントの申し込み情報を更新する
+    function client_eventRequestChange(userId, eventId) {
+        google.script.run
+            .eventRequestChange(userId, eventId);
+    }
+
     // 画面に遷移する
-    function jump(screenName) {
+    function jump(screenName, nameArray) {
         google.script.run
             .withSuccessHandler(createUrl)
             .withUserObject(screenName)
@@ -76,6 +93,7 @@
     function createUrl(url, screenName) {
         window.top.location.href = url + "?page=" + screenName;
     }
+
 </script>
 
 </html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <?!= include("css"); ?>
+  <base target="_top">
+</head>
+
+<body>
+  <div id="eventDetail">
+    <div id="pair">
+      <div id="mypage">
+        <font size="5">イベント詳細</font>
+      </div>
+      <div id="myname">
+        <font size="5"><?= getData(userName) ?></font>
+      </div>
+    </div>
+    <table id="eventDetail_table">
+      <tr>
+        <td>イベント名</td>
+        <td><?= eventDetailArray[1]?></td>
+      </tr>
+      <tr>
+        <td>実施日</td>
+        <td><?= eventDetailArray[2]?></td>
+      </tr>
+      <tr>
+        <td>詳細</td>
+        <td>
+          <? let details = eventDetailArray[3].split("\n")?>
+          <? for(let i = 0;i < details.length;i++){ ?>
+          <?= details[i] ?>
+          <? if(i != details.length-1){ ?>
+          <br>
+          <? } ?>
+          <? } ?>
+        </td>
+      </tr>
+      <tr>
+        <td>申込期限</td>
+        <td><?= eventDetailArray[4]?></td>
+      </tr>
+    </table>
+    <button type=" button" name="back" onclick="jump('mypage',<?= userId ?>)">
+      <font size="2">戻る</font>
+    </button>
+</body>
+</div>
+<script>
+  // 画面に遷移する
+  function jump(screenName, userId) {
+    const nameArray = [screenName, userId];
+    google.script.run
+      .withSuccessHandler(createUrl)
+      .withUserObject(nameArray)
+      .getAppUrl();
+  }
+
+  //サーバ側の関数の失敗時に実行する
+  function onFailure(error) {
+    alert(error.message);
+  }
+
+  //サーバ側のgetAppUrl()の成功時に実行する
+  function createUrl(url, nameArray) {
+    if (nameArray[1] == null) {
+      window.top.location.href = url + "?page=" + nameArray[0];
+    } else {
+      window.top.location.href = url + "?page=" + nameArray[0] + "&userId=" + nameArray[1];
+    }
+  }
+
+</script>
+
+</html>

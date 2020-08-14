@@ -6,7 +6,7 @@
     <?!= include("css"); ?>
 </head>
 
-<body>
+<body onload="proc();">
     <h1>ログイン</h1>
     <table border="0">
         <tr>
@@ -21,29 +21,35 @@
             <td><button type="submit" name="page" onclick="userConfirm()" value="mypage">
                     <font size="2">ログイン</font>
                 </button></td>
-            <td><button type="button" name="create" onclick="jump(this.value)" value="create">
+            <td><button type="button" name="create" onclick="jump(this.value, null)" value="create">
                     <font size="2">新規登録</font>
                 </button></td>
         </tr>
     </table>
 </body>
 <script>
+
     // 画面に遷移する
-    function jump(screenName) {
+    function jump(screenName, userId) {
+        const nameArray = [screenName, userId];
         google.script.run
             .withSuccessHandler(createUrl)
-            .withUserObject(screenName)
+            .withUserObject(nameArray)
             .getAppUrl();
+    }
+
+    //サーバ側のgetAppUrl()の成功時に実行する
+    function createUrl(url, nameArray) {
+        if (nameArray[1] == null) {
+            window.top.location.href = url + "?page=" + nameArray[0];
+        } else {
+            window.top.location.href = url + "?page=" + nameArray[0] + "&userId=" + nameArray[1];
+        }
     }
 
     //サーバ側のgetAppUrl()の失敗時に実行する
     function onFailure(error) {
         alert(error.message);
-    }
-
-    //サーバ側のgetAppUrl()の成功時に実行する
-    function createUrl(url, screenName) {
-        window.top.location.href = url + "?page=" + screenName;
     }
 
     //入力情報を確認する
@@ -55,16 +61,20 @@
             alert("未入力の項目があります。");
             return;
         }
-        google.script.run.withSuccessHandler(login).userConfirm(id, password);
+        google.script.run
+            .withSuccessHandler(login)
+            .withFailureHandler(onFailure)
+            .userConfirm(id, password);
     }
 
     function login(login_check) {
-        if (login_check) {
-            jump("mypage");
-        } else {
+        if (login_check === null) {
             alert("IDまたはパスワードが間違っています");
+        } else {
+            jump("mypage", login_check[0]);
         }
     }
+
 </script>
 
 </html>

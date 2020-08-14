@@ -18,6 +18,13 @@ function submitUserDataTest() {
 }
 
 /**
+ * getNameFromId()をテストする
+ */
+function getNameFromIdTest() {
+  console.log(getNameFromId("eiwa001"));
+}
+
+/**
  * findRow()をテストする
  */
 function findRowTest() {
@@ -26,6 +33,36 @@ function findRowTest() {
 }
 
 /**
+ * getEventDetail()をテストする
+ * @param {*} eventId
+ */
+function getEventDetailTest() {
+  console.log(getEventDetail(2));
+}
+
+/**
+ * getEventInfo()のテストをする
+ */
+function getEventInfoTest() {
+  console.log(getEventInfo());
+}
+
+/**
+ * getEventId()のテストをする
+ */
+function getEventIdTest() {
+  let eventIdList = getEventId("eiwa001");
+  console.log(eventIdList[0]);
+}
+
+/**
+ * eventRequestChangeのテストをする
+ */
+function eventRequestChangeTest() {
+  eventRequestChange("eiwa001", 3);
+}
+
+/*
  * submitUserDataをテストする
  */
 function submitUserDataTest() {

@@ -34,20 +34,21 @@
             <td><input type="text" id="school" maxlength="20"></td>
         </tr>
     </table>
-    <button type="submit" name="page" onclick="create()" value="mypage">
-        <font size="3">登録</font>
+    <button type="button" name="page" onclick="create()" value="mypage">
+        <font size="2">登録</font>
     </button></br>
     <button type="button" name="create" onclick="jump('login')" value="create">
         <font size="2">戻る</font>
     </button></br>
 </body>
 <script>
+
     // 画面に遷移する
-    function jump(screenName) {
+    function jump(screenName, userId) {
+        const nameArray = [screenName, userId];
         google.script.run
             .withSuccessHandler(createUrl)
-            .withFailureHandler(onFailure)
-            .withUserObject(screenName)
+            .withUserObject(nameArray)
             .getAppUrl();
     }
 
@@ -57,8 +58,12 @@
     }
 
     //サーバ側のgetAppUrl()の成功時に実行する
-    function createUrl(url, screenName) {
-        window.top.location.href = url + "?page=" + screenName;
+    function createUrl(url, nameArray) {
+        if (nameArray[1] == null) {
+            window.top.location.href = url + "?page=" + nameArray[0];
+        } else {
+            window.top.location.href = url + "?page=" + nameArray[0] + "&userId=" + nameArray[1];
+        }
     }
 
     //新規ユーザ登録する
@@ -86,9 +91,9 @@
     }
 
     //サーバ側のsubmitUserData関数が正常実行された時に実行する
-    function createData() {
+    function createData(create_check) {
         alert("登録が完了しました");
-        jump("mypage");
+        jump("mypage", create_check[0]);
     }
 </script>
 
