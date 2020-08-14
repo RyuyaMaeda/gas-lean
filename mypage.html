@@ -40,8 +40,6 @@
 <script>
     // 申し込みボタンとキャンセルボタンの切り替えをして、イベントの申し込み情報を更新する
     function changeToInputFunction(buttonId, cancelButtonId) {
-        // alert(buttonId);
-        // alert(cancelButtonId);
         let button = document.getElementById(buttonId);
         let cancelButton = document.getElementById(cancelButtonId);
         if (button.disabled === true) {
@@ -66,7 +64,6 @@
 
     //ボタンのdisabled設定する
     function buttonSetter(eventIdList) {
-        //alert(eventIdList.length);
         for (let i = 0; i < eventIdList.length; i++) {
             document.getElementById(i).disabled = eventIdList[i];
             document.getElementById(("cancel" + i)).disabled = !(eventIdList[i]);
@@ -75,8 +72,6 @@
 
     //各イベントの申し込み情報を更新する
     function client_eventRequestChange(userId, eventId) {
-        //alert(userId);
-        // alert(eventId);
         google.script.run
             .eventRequestChange(userId, eventId);
     }

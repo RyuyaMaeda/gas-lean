@@ -216,7 +216,6 @@ function eventRequestChange(userId, eventId) {
   data.shift();
   for (let i = 0; i < data.length; i++) {
     if (userId === data[i][0]) {
-      // console.log(data[i][eventId])
       requestSheet.getRange(i + 2, eventId + 1).setValue(!(data[i][eventId]));
     }
   }
