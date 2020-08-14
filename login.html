@@ -68,7 +68,7 @@
     }
 
     function login(login_check) {
-        if (!login_check) {
+        if (login_check === null) {
             alert("IDまたはパスワードが間違っています");
         } else {
             jump("mypage", login_check[0]);

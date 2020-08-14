@@ -22,37 +22,6 @@ function doGet(e) {
   eventDataArray.shift();
   template.eventDataArray = eventDataArray;
   return template.evaluate();
-  // let page = e.parameter["page"];
-  // if (page === "mypage") {
-  //   const template = HtmlService.createTemplateFromFile("mypage");
-  //   let eventDataArray = getEventInfo();
-  //   eventDataArray.shift();
-  //   template.eventDataArray = eventDataArray;
-  //   let id = e.parameter["userid"];
-  //   template.userId = id;
-  //   const userName = getNameFromId(id);
-  //   template.userName = userName;
-  //   let eventIdList = getEventId(id);
-  //   template.eventIdList = eventIdList;
-  //   return template.evaluate();
-  // } else if (page === "create") {
-  //   return HtmlService.createTemplateFromFile("create").evaluate();
-  // } else if (page === "eventDetail") {
-  //   const template = HtmlService.createTemplateFromFile("eventDetail");
-  //   let eventDataArray = getEventInfo();
-  //   let eventNumber = e.parameter["eventNumber"];
-  //   let eventDetailArray = eventDataArray[eventNumber];
-  //   template.eventNumber = eventNumber;
-  //   template.eventDataArray = eventDetailArray;
-  //   let id = e.parameter["userId"];
-  //   template.userId = id;
-  //   const userName = getNameFromId(id);
-  //   template.userName = userName;
-  //   return template.evaluate();
-  // }
-  // else {
-  //   return HtmlService.createTemplateFromFile("login").evaluate();
-  // }
 }
 
 function getData(mydata) {
@@ -96,7 +65,7 @@ function getAppUrl() {
  *
  * @param {*} id
  * @param {*} password
- * @return {*} 合っていたら氏名を、間違っていたらfalseを返す
+ * @return {*} 合っていたら氏名を、間違っていたらnullを返す
  */
 function userConfirm(id, password) {
   const userDataArray = userInfoSheet.getDataRange().getValues();
@@ -106,7 +75,7 @@ function userConfirm(id, password) {
       return userDataArray[i];
     }
   }
-  return false;
+  return null;
 }
 
 /**
